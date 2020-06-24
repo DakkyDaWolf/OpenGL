@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b09d508b-93e7-4595-a90d-1d56440847b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{786a5eb2-7a4c-453a-99b1-3a4e3cf0a021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{70b42764-191c-454e-9700-97bbdc07f7ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CubeDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CubeDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Content\Effects\CubeDemo.frag" />
+    <CopyFileToFolders Include="Content\Effects\CubeDemo.vert" />
+  </ItemGroup>
+</Project>

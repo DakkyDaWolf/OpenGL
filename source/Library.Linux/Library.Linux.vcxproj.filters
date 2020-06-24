@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{4f717480-d444-48dc-a4c2-38e33e99066d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{1454460e-8e1a-4a2f-a0fd-313fddb6626d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{609d3dc8-daa1-446b-8cdc-add597358932}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Effects\BasicEffect.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\Skybox.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\Skybox.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\BasicEffect.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Models\Sphere.obj">
+      <Filter>Content\Models</Filter>
+    </None>
+  </ItemGroup>
+</Project>

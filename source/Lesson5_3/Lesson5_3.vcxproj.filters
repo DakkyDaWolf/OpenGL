@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b09d508b-93e7-4595-a90d-1d56440847b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{786a5eb2-7a4c-453a-99b1-3a4e3cf0a021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{964b873d-cde7-4ac0-9a7b-e2526b6b1c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{03cf50cb-6cc5-45ac-a25e-77aee165b4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures">
+      <UniqueIdentifier>{d449d9a8-d2b2-43dd-a676-d896ee7806e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{473148ea-228b-4da2-ab84-807c73cf0da4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BlinnPhongDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="BlinnPhongEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BlinnPhongDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="BlinnPhongEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Content\Effects\BlinnPhongDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\BlinnPhongDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Earthatday.png" />
+    <CopyFileToFolders Include="Content\Textures\EarthatdayColor.png" />
+    <CopyFileToFolders Include="Content\Textures\EarthatdaySpec.png" />
+    <CopyFileToFolders Include="Content\Models\DirectionalLightProxy.obj" />
+    <CopyFileToFolders Include="Content\Models\Sphere.obj" />
+  </ItemGroup>
+</Project>

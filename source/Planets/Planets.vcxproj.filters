@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Lights">
+      <UniqueIdentifier>{2f121478-bdd1-4718-84be-dfaa7520c7ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{00fe59e9-f9ea-4a6c-8704-eb90909a612c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{01f5fa95-dd5a-4066-ae9a-0bf17e995537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{fb51a460-d11b-4bc8-a8b2-7cb5eda9d7f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PointLightDemo.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PointLightDemo.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Effects\PointLightDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\PointLightDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Textures\Earthatday.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Content\Models\PointLightProxy.obj" />
+    <Object Include="Content\Models\Sphere.obj" />
+  </ItemGroup>
+</Project>

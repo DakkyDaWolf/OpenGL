@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{3aa56e0a-d773-459f-96c7-8fd45105f1a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{54747391-9998-4277-88f7-d6273384f3f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Effects">
+      <UniqueIdentifier>{8bb1aede-dd22-48fc-bbf5-984d086687b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="CubeDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="CubeDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Effects\CubeDemo.frag">
+      <Filter>Contents\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\CubeDemo.vert">
+      <Filter>Contents\Effects</Filter>
+    </None>
+  </ItemGroup>
+</Project>

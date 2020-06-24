@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b09d508b-93e7-4595-a90d-1d56440847b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{786a5eb2-7a4c-453a-99b1-3a4e3cf0a021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{964b873d-cde7-4ac0-9a7b-e2526b6b1c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{2bd67125-40c9-4ac5-849b-597168650c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{653270bd-2d12-4990-9ed7-a3697153cb8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures">
+      <UniqueIdentifier>{c0f88960-0318-41af-82bd-5d0e72bac0d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures\Maskonaive2_1024">
+      <UniqueIdentifier>{4e2caac1-34cd-49d8-b43d-a46b5e380d5c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="NormalMappingDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="FogEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalMappingEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NormalMappingDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalMappingEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="FogEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Content\Effects\NormalMappingDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\NormalMappingDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Blocks_COLOR.tga">
+      <Filter>Content\Textures</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Blocks_NORM.tga">
+      <Filter>Content\Textures</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\FogDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\FogDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\negx.jpg">
+      <Filter>Content\Textures\Maskonaive2_1024</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\negy.jpg">
+      <Filter>Content\Textures\Maskonaive2_1024</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\negz.jpg">
+      <Filter>Content\Textures\Maskonaive2_1024</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\posx.jpg">
+      <Filter>Content\Textures\Maskonaive2_1024</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\posy.jpg">
+      <Filter>Content\Textures\Maskonaive2_1024</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\posz.jpg">
+      <Filter>Content\Textures\Maskonaive2_1024</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Models\DirectionalLightProxy.obj">
+      <Filter>Content\Models</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Content\Effects\ShadowMappingPS.hlsl">
+      <Filter>Content\Effects</Filter>
+    </FxCompile>
+    <FxCompile Include="Content\Effects\ShadowMappingVS.hlsl">
+      <Filter>Content\Effects</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

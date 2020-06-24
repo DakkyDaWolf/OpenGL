@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b09d508b-93e7-4595-a90d-1d56440847b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{786a5eb2-7a4c-453a-99b1-3a4e3cf0a021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{964b873d-cde7-4ac0-9a7b-e2526b6b1c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{03cf50cb-6cc5-45ac-a25e-77aee165b4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{f127c6c1-be47-4fc4-bfdf-0aba808f102c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures">
+      <UniqueIdentifier>{306d7372-024d-4394-aa42-eb0acd2e451b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SpotLightDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLightEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpotLightDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLightEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Content\Effects\SpotLightDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\SpotLightDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Checkerboard.png" />
+    <CopyFileToFolders Include="Content\Models\SpotLightProxy.obj" />
+  </ItemGroup>
+</Project>

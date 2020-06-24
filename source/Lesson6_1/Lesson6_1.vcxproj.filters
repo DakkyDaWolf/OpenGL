@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b09d508b-93e7-4595-a90d-1d56440847b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{786a5eb2-7a4c-453a-99b1-3a4e3cf0a021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{964b873d-cde7-4ac0-9a7b-e2526b6b1c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{2bd67125-40c9-4ac5-849b-597168650c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{97add6da-25aa-484b-a907-29518e9fd83d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures">
+      <UniqueIdentifier>{ca83d986-971e-4ff8-bcb6-fea05e69051d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures\Maskonaive2_1024">
+      <UniqueIdentifier>{9f1435ef-8c46-4694-bb7d-71a9a46c37a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EnvironmentMappingDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="EnvironmentMappingEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EnvironmentMappingDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvironmentMappingEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Content\Effects\EnvironmentMappingDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\EnvironmentMappingDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Models\Sphere.obj" />
+    <CopyFileToFolders Include="Content\Textures\Checkerboard.png" />
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\negx.jpg" />
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\negy.jpg" />
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\negz.jpg" />
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\posx.jpg" />
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\posy.jpg" />
+    <CopyFileToFolders Include="Content\Textures\Maskonaive2_1024\posz.jpg" />
+  </ItemGroup>
+</Project>

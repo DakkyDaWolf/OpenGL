@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b09d508b-93e7-4595-a90d-1d56440847b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Effects">
+      <UniqueIdentifier>{786a5eb2-7a4c-453a-99b1-3a4e3cf0a021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{964b873d-cde7-4ac0-9a7b-e2526b6b1c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{03cf50cb-6cc5-45ac-a25e-77aee165b4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{5bca7968-91be-4bf1-a379-6ccac43bbc8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures">
+      <UniqueIdentifier>{ce05a559-d1fc-414f-bc10-9346796f2f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Textures\Skybox">
+      <UniqueIdentifier>{35a0099e-48d3-4997-bd0b-43c9d0dc524c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PointLightDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlanetSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PointLightDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Planet.h" />
+    <ClInclude Include="PlanetSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Content\Effects\PointLightDemo.vert">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Effects\PointLightDemo.frag">
+      <Filter>Content\Effects</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Textures\Earthatday.png">
+      <Filter>Content\Textures</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Models\Sphere.obj">
+      <Filter>Content\Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Content\Models\PointLightProxy.obj">
+      <Filter>Content\Models</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Textures\2k_jupiter.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_mars.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_mercury.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_moon.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_neptune.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_pluto.jpg">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_saturn.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_sun.jpg">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_uranus.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_venus_atmosphere.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\2k_venus_surface.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\back.png">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\bottom.png">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\front.png">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\left.png">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\right.png">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\top.png">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Effects\EmissiveTest.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+  </ItemGroup>
+</Project>
