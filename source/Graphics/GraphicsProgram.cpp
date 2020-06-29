@@ -45,7 +45,6 @@ namespace Rendering
 
 		shaders.clear();
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/DepthPass.vert"));
-		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/DepthPass.frag"));
 		mDepthPass.BuildProgram(shaders);
 		
 		// Load the color texture
@@ -108,23 +107,39 @@ namespace Rendering
 		mDirectionalLight = make_shared<DirectionalLight>(*mGame);
 		mSpotLight = make_shared<ProjectingLight>(*mGame);
 		mSpotLight->Initialize();
-		mSpotLight->SetPosition(0.0f, 5.0, 15.0f);
+		mSpotLight->SetPosition(0.0f, 10.0, 15.0f);
 		mSpotLight->SetAttenuationRadius(500.f);
-		mSpotLight->SetInnerAngle(1.f);
-		mSpotLight->SetOuterAngle(0.95f);
+		mSpotLight->SetInnerAngle(.95f);
+		mSpotLight->SetOuterAngle(0.90f);
+		mSpotLight->SetNearPlaneDistance(1.f);
+		mSpotLight->SetFarPlaneDistance(10.f);
 
 		mProxyModel = make_shared<ProxyModel>(*mGame, mCamera, "Content/Models/DirectionalLightProxy.obj", 0.5f);
 		mProxyModel->Initialize();
-		mProxyModel->SetPosition(0.0f, 5.0, 15.0f);
+		mProxyModel->SetPosition(0.0f, 10.0, 15.0f);
 		mProxyModel->ApplyRotation(rotate(mat4(1), half_pi<float>(), Vector3Helper::Up));
 
 		mDog = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Wolf.obj", "Content/Textures/Wolf.png");
 		mDog->Initialize();
-		mDog->SetPosition(0, 0, 7.f);
+		mDog->SetPosition(3.f, 0, 7.f);
 		mDog->ApplyScale(10.f);
 		//mDog->SetAlbedo(ColorHelper::Cyan);
 		mDog->SetAmbientLight(mAmbientLight);
 		mDog->SetSpotLight(mSpotLight);
+		
+		mStatue = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Building.obj", "Content/Textures/Building.png");
+		mStatue->Initialize();
+		mStatue->SetPosition(-20.f, 0, 3.f);
+		mStatue->ApplyScale(1.f);
+		mStatue->SetAmbientLight(mAmbientLight);
+		mStatue->SetSpotLight(mSpotLight);
+
+		mBuilding = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Building3.obj", "Content/Textures/Building.png");
+		mBuilding->Initialize();
+		mBuilding->SetPosition(20.f, 0, 0.f);
+		mBuilding->ApplyScale(1.f);
+		mBuilding->SetAmbientLight(mAmbientLight);
+		mBuilding->SetSpotLight(mSpotLight);
 
 		mDebugRect = make_shared<ScreenRect>(*mGame);
 		mDebugRect->Initialize();
@@ -145,18 +160,18 @@ namespace Rendering
 		UpdateSpecularLight(gameTime);
 
 		mDog->Update(gameTime);
+		mStatue->Update(gameTime);
+		mBuilding->Update(gameTime);
 		mProxyModel->Update(gameTime);
 	}
 
 	void GraphicsProgram::Draw(const GameTime& gameTime)
 	{
-		glViewport(0, 0, mSpotLight->DepthMapWidth(), mSpotLight->DepthMapHeight());
-		glBindFramebuffer(GL_FRAMEBUFFER, mSpotLight->FrameBuffer());
-		glClear(GL_DEPTH_BUFFER_BIT);
+		mSpotLight->ClearBuffer();
 
-		//mDog->DepthTest(*mSpotLight);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		mStatue->DepthTest(*mSpotLight);
+		mDog->DepthTest(*mSpotLight);
+		mBuilding->DepthTest(*mSpotLight);
 
 
 		if (!mShowShadowMapping)
@@ -203,6 +218,8 @@ namespace Rendering
 
 		mProxyModel->Draw(gameTime);
 		mDog->Draw(gameTime);
+		mStatue->Draw(gameTime);
+		mBuilding->Draw(gameTime);
 		mDebugRect->Draw(gameTime);
 	}
 

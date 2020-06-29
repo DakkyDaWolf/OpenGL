@@ -25,7 +25,8 @@ namespace Library
 		RTTI_DECLARATIONS(RenderedMesh, DrawableGameComponent)
 
 	public:
-		RenderedMesh(Library::Game& game, std::shared_ptr<Camera> camera, const std::string& objectFilename, const std::string& textureFilename = "");
+		RenderedMesh(Library::Game& game, std::shared_ptr<Camera> camera,
+			const std::string& objectFilename, const std::string& textureFilename = "", int meshIndex = 0);
 		RenderedMesh(const RenderedMesh&) = delete;
 		RenderedMesh& operator=(const RenderedMesh&) = delete;
 		RenderedMesh(RenderedMesh&&) = delete;
@@ -54,6 +55,7 @@ namespace Library
 		bool mViewMatrixDataDirty{ true };
 
 	private:
+		int mMeshIndex;
 
 		std::string mObjectFilename;
 		std::string mTextureFilename;
@@ -74,8 +76,8 @@ namespace Library
 		std::size_t mIndexCount = 0;
 
 		float mSpecularPower = 25.0f;
-		float mFogStart = 20.0f;
-		float mFogRange = 40.0f;
+		float mFogStart = 80.0f;
+		float mFogRange = 100.0f;
 		glm::vec4 mFogColor = Library::ColorHelper::CornflowerBlue;
 		glm::vec4 mAlbedo = ColorHelper::White;
 

@@ -20,6 +20,7 @@ namespace Library
 
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
+		void ClearBuffer();
 
 		float InnerAngle() const;
 		void SetInnerAngle(float value);

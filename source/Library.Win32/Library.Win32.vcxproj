@@ -209,6 +209,12 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <Media Update="C:\dev\OpenGL\source\Library.Shared\Content\Models\Building.obj">
+      <FileType>Document</FileType>
+    </Media>
+    <Media Update="C:\dev\OpenGL\source\Library.Shared\Content\Models\Building3.obj">
+      <FileType>Document</FileType>
+    </Media>
     <Media Update="C:\dev\OpenGL\source\Library.Shared\Content\Models\LibertStatue.obj">
       <FileType>Document</FileType>
     </Media>
@@ -229,5 +235,13 @@
     <None Update="C:\Dev\opengl-essentials-livelessons\source\Library.Shared\Content\Models\Sphere.obj">
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Update="C:\dev\OpenGL\source\Library.Shared\Content\Models\Building.obj">
+      <FileType>Document</FileType>
+    </Resource>
+    <Resource Update="C:\dev\OpenGL\source\Library.Shared\Content\Models\Building3.obj">
+      <FileType>Document</FileType>
+    </Resource>
   </ItemGroup>
 </Project>

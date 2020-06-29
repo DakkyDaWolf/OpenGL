@@ -414,6 +414,12 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTexture.vert">
       <Filter>Content\Effects</Filter>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTextureDepth.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTextureDepth.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="$(MSBuildThisFileDirectory)Content\Textures\WolfBody.png">
@@ -434,5 +440,7 @@
     <Media Include="$(MSBuildThisFileDirectory)Content\Models\Wolf.obj">
       <Filter>Content\Models</Filter>
     </Media>
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Building.obj" />
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Building3.obj" />
   </ItemGroup>
 </Project>

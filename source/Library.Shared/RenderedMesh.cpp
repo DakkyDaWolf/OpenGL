@@ -18,9 +18,9 @@ namespace Library
 
 	RTTI_DEFINITIONS(RenderedMesh)
 
-	RenderedMesh::RenderedMesh(Library::Game& game, std::shared_ptr<Camera> camera, const std::string& objectFilename, const std::string& textureFilename) :
+	RenderedMesh::RenderedMesh(Library::Game& game, std::shared_ptr<Camera> camera, const std::string& objectFilename, const std::string& textureFilename, int meshIndex) :
 		DrawableGameComponent(game, move(camera)), mObjectFilename(objectFilename), mTextureFilename(textureFilename), mTextured(!textureFilename.empty()),
-		MovableGameObject(game)
+		MovableGameObject(game), mMeshIndex(meshIndex)
 	{
 	}
 
@@ -66,7 +66,7 @@ namespace Library
 		Model model(mObjectFilename, true);
 
 		// Create the vertex and index buffers
-		auto mesh = model.Meshes().at(0);
+		auto mesh = model.Meshes().at(mMeshIndex);
 
 		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVertexBuffer);
 		mesh->CreateIndexBuffer(mIndexBuffer);
@@ -76,6 +76,7 @@ namespace Library
 		// Create the vertex array objects
 		glGenVertexArrays(1, &mVertexArrayObject);
 		mShaderProgram.Initialize(mVertexArrayObject);
+		mShaderProgramDepth.Initialize(mVertexArrayObject);
 		glBindVertexArray(0);
 
 		mWorldMatrix = mat4(1);

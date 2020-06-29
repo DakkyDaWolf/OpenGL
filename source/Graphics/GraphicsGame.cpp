@@ -86,7 +86,7 @@ namespace Rendering
 
 		Game::Initialize();
 
-		camera->SetPosition(0, 5, 30);
+		camera->SetPosition(0, 5, 40);
 	}
 
 	void GraphicsGame::Draw(const GameTime& gameTime)

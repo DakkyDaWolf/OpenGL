@@ -21,6 +21,18 @@ namespace Library
 	{
 	}
 
+	void Camera::SetNearPlaneDistance(float nearPlaneDistance)
+	{
+		mNearPlaneDistance = nearPlaneDistance;
+		mProjectionMatrixDataDirty = true;
+	}
+
+	void Camera::SetFarPlaneDistance(float farPlaneDistance)
+	{
+		mFarPlaneDistance = farPlaneDistance;
+		mProjectionMatrixDataDirty = true;
+	}
+
 	const glm::vec3& Camera::Position() const
 	{
 		return mPosition;

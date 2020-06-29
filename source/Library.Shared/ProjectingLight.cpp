@@ -13,14 +13,15 @@ namespace Library
 	void ProjectingLight::Initialize()
 	{
 		PerspectiveCamera::Initialize();
+		Light::Initialize();
 		SetAspectRatio(1.f);
 
 		glGenFramebuffers(1, &mDepthMapFBOID);
 
 		glGenTextures(1, &mDepthMapTextureID);
 		glBindTexture(GL_TEXTURE_2D, mDepthMapTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-			mDepthMapW, mDepthMapH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, mDepthMapW, mDepthMapH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -37,6 +38,14 @@ namespace Library
 	{
 		PerspectiveCamera::Update(gameTime);
 		UpdateProjectionMatrix();
+	}
+
+	void ProjectingLight::ClearBuffer()
+	{
+		static const GLfloat one = 1.0f;
+		glBindFramebuffer(GL_FRAMEBUFFER, mDepthMapFBOID);
+		glClearBufferfv(GL_DEPTH, 0, &one);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	float ProjectingLight::InnerAngle() const

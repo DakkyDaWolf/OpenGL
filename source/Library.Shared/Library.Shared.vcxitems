@@ -139,6 +139,8 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTexture.frag" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTexture.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTextureDepth.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTextureDepth.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\BasicEffect.frag" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\BasicEffect.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\DepthPass.frag" />
@@ -191,5 +193,19 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="$(MSBuildThisFileDirectory)Content\Textures\WolfBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Building.obj">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </Media>
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Building3.obj">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </Media>
   </ItemGroup>
 </Project>

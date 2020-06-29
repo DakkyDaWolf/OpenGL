@@ -27,6 +27,9 @@ namespace Library
 		const glm::vec3& Up() const;
 		const glm::vec3& Right() const;
 
+		void SetNearPlaneDistance(float nearPlaneDistance);
+		void SetFarPlaneDistance(float farPlaneDistance);
+
 		float NearPlaneDistance() const;
 		float FarPlaneDistance() const;
 

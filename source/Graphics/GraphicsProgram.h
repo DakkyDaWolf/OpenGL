@@ -66,15 +66,21 @@ namespace Rendering
 		GLuint mIndexBuffer = 0;
 		std::size_t mIndexCount = 0;
 		GLuint mColorTexture = 0;
+
+
 		std::shared_ptr<Library::Light> mAmbientLight;
 		std::shared_ptr<Library::DirectionalLight> mDirectionalLight;
 		std::shared_ptr<Library::ProjectingLight> mSpotLight;
 		std::shared_ptr<Library::ProxyModel> mProxyModel;
 		std::shared_ptr<Library::RenderedMesh> mDog;
+		std::shared_ptr<Library::RenderedMesh> mStatue;
+		std::shared_ptr<Library::RenderedMesh> mBuilding;
 		std::shared_ptr<Library::ScreenRect> mDebugRect;
+
+
 		float mSpecularPower = 25.0f;
-		float mFogStart = 20.0f;
-		float mFogRange = 40.0f;
+		float mFogStart = 80.0f;
+		float mFogRange = 100.0f;
 		GLuint mNormalMap = 0;
 		GLuint mTrilinearSampler = 0;
 		Library::Game::KeyboardHandler mKeyboardHandler;
