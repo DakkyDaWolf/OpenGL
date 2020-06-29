@@ -11,6 +11,7 @@
 #include "RenderedMesh.h"
 #include "ProjectingLight.h"
 #include "Game.h"
+#include "ScreenRect.h"
 
 namespace Library
 {
@@ -70,6 +71,7 @@ namespace Rendering
 		std::shared_ptr<Library::ProjectingLight> mSpotLight;
 		std::shared_ptr<Library::ProxyModel> mProxyModel;
 		std::shared_ptr<Library::RenderedMesh> mDog;
+		std::shared_ptr<Library::ScreenRect> mDebugRect;
 		float mSpecularPower = 25.0f;
 		float mFogStart = 20.0f;
 		float mFogRange = 40.0f;
@@ -77,11 +79,5 @@ namespace Rendering
 		GLuint mTrilinearSampler = 0;
 		Library::Game::KeyboardHandler mKeyboardHandler;
 		bool mShowShadowMapping = false;
-
-
-		GLuint mDepthMapFBOID = 0;
-		GLuint mDepthMapTextureID = 0;
-		GLuint mDepthMapW = 512;
-		GLuint mDepthMapH = 512;
 	};
 }

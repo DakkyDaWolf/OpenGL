@@ -18,7 +18,8 @@ namespace Library
 		SHADER_VARIABLE_INITIALIZATION(FogColor), SHADER_VARIABLE_INITIALIZATION(FogStart),
 		SHADER_VARIABLE_INITIALIZATION(FogRange),
 		SHADER_VARIABLE_INITIALIZATION(LightPosition), SHADER_VARIABLE_INITIALIZATION(LightInnerAngle),
-		SHADER_VARIABLE_INITIALIZATION(LightOuterAngle), SHADER_VARIABLE_INITIALIZATION(LightFalloffRange)
+		SHADER_VARIABLE_INITIALIZATION(LightOuterAngle), SHADER_VARIABLE_INITIALIZATION(LightFalloffRange),
+		SHADER_VARIABLE_INITIALIZATION(Albedo)
 	{
 	}
 
@@ -37,6 +38,7 @@ namespace Library
 	SHADER_VARIABLE_DEFINITION(SpotLightEffect, LightInnerAngle)
 	SHADER_VARIABLE_DEFINITION(SpotLightEffect, LightOuterAngle)
 	SHADER_VARIABLE_DEFINITION(SpotLightEffect, LightFalloffRange)
+	SHADER_VARIABLE_DEFINITION(SpotLightEffect, Albedo)
 
 
 	void SpotLightEffect::Initialize(GLuint vertexArrayObject)
@@ -58,6 +60,7 @@ namespace Library
 		SHADER_VARIABLE_INSTANTIATE(LightInnerAngle)
 		SHADER_VARIABLE_INSTANTIATE(LightOuterAngle)
 		SHADER_VARIABLE_INSTANTIATE(LightFalloffRange)
+		SHADER_VARIABLE_INSTANTIATE(Albedo)
 
 		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position));
 		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));

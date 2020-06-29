@@ -5,9 +5,8 @@
 
 using namespace glm;
 using namespace std;
-using namespace Library;
 
-namespace Rendering
+namespace Library
 {
     RTTI_DEFINITIONS(PointLightEffect)	
 

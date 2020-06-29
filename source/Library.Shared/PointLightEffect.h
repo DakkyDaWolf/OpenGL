@@ -3,11 +3,11 @@
 #include "ShaderProgram.h"
 #include "VertexDeclarations.h"
 
-namespace Rendering
+namespace Library
 {
-	class PointLightEffect final : public Library::ShaderProgram
-  {
-		RTTI_DECLARATIONS(PointLightEffect, Library::ShaderProgram)
+	class PointLightEffect final : public ShaderProgram
+	{
+		RTTI_DECLARATIONS(PointLightEffect, ShaderProgram)
 
 		SHADER_VARIABLE_DECLARATION(WorldViewProjection)
 		SHADER_VARIABLE_DECLARATION(World)
@@ -32,5 +32,5 @@ namespace Rendering
 			TextureCoordinate = 1,
 			Normal = 2
 		};
-  };
+	};
 }

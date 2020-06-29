@@ -56,6 +56,12 @@ namespace Library
 
 		static const glm::vec4 Zero;
 		static const glm::vec4 One;
+		static const glm::vec4 Forward;
+		static const glm::vec4 Backward;
+		static const glm::vec4 Right;
+		static const glm::vec4 Left;
+		static const glm::vec4 Up;
+		static const glm::vec4 Down;
 
 		static std::string ToString(const glm::vec4& vector);
 	};

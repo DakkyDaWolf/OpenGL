@@ -26,7 +26,9 @@ namespace Library
 	private:
 		enum class VertexAttribute
 		{
-			Position = 0
+			Position = 0,
+			TextureCoordinate = 1,
+			Normal = 2
 		};
 	};
 }

@@ -39,7 +39,7 @@ namespace Rendering
 
 		// Build the shader program
 		vector<ShaderDefinition> shaders;
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/PointLightDemo.vert"));
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/PointLight.vert"));
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/EmissiveTest.frag"));
 		mShaderProgram.BuildProgram(shaders);
 

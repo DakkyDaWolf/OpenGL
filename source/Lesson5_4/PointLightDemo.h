@@ -41,7 +41,7 @@ namespace Rendering
 
 		glm::mat4 mWorldMatrix{ 1 };
 		glm::vec4 mSpecularColor = Library::ColorHelper::White;
-		PointLightEffect mShaderProgram;
+		Library::PointLightEffect mShaderProgram;
 		GLuint mVertexArrayObject = 0;
 		GLuint mVertexBuffer = 0;
 		GLuint mIndexBuffer = 0;		

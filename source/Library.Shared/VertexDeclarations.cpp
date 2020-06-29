@@ -84,6 +84,26 @@ namespace Library
 		VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
 	}
 
+	void VertexPositionNormal::CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer)
+	{
+		const vector<vec3>& sourceVertices = mesh.Vertices();
+
+		vector<VertexPositionNormal> vertices;
+		vertices.reserve(sourceVertices.size());
+
+		const vector<vec3>& normals = mesh.Normals();
+		assert(normals.size() == sourceVertices.size());
+
+		for (size_t i = 0; i < sourceVertices.size(); i++)
+		{
+			const vec3& position = sourceVertices.at(i);
+			const vec3& normal = normals.at(i);
+			vertices.emplace_back(vec4(position.x, position.y, position.z, 1.0f), normal);
+		}
+
+		VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
+	}
+
 	void VertexPositionTextureNormal::CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer)
 	{
 		const vector<vec3>& sourceVertices = mesh.Vertices();

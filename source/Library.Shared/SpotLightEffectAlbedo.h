@@ -36,8 +36,7 @@ namespace Library
 		enum VertexAttribute
 		{
 			Position = 0,
-			TextureCoordinate = 1,
-			Normal = 2
+			Normal = 1
 		};
 	};
 }

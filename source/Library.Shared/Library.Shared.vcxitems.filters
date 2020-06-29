@@ -184,6 +184,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PerspectiveCamera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovableGameObject.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PointLightEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScreenRect.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureRectEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BasicEffect.h">
@@ -331,6 +343,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PerspectiveCamera.h">
       <Filter>Cameras</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovableGameObject.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PointLightEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScreenRect.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureRectEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Enum.inl">
@@ -384,10 +408,10 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffect.vert">
       <Filter>Content\Effects</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffectAlbedo.frag">
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTexture.frag">
       <Filter>Content\Effects</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffectAlbedo.vert">
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTexture.vert">
       <Filter>Content\Effects</Filter>
     </None>
   </ItemGroup>
@@ -398,9 +422,17 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="$(MSBuildThisFileDirectory)Content\Models\pallet.blend" />
-    <Media Include="$(MSBuildThisFileDirectory)Content\Models\LibertStatue.obj" />
-    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Sphere.obj" />
-    <Media Include="$(MSBuildThisFileDirectory)Content\Models\teapot.obj" />
-    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Wolf.obj" />
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\LibertStatue.obj">
+      <Filter>Content\Models</Filter>
+    </Media>
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Sphere.obj">
+      <Filter>Content\Models</Filter>
+    </Media>
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\teapot.obj">
+      <Filter>Content\Models</Filter>
+    </Media>
+    <Media Include="$(MSBuildThisFileDirectory)Content\Models\Wolf.obj">
+      <Filter>Content\Models</Filter>
+    </Media>
   </ItemGroup>
 </Project>

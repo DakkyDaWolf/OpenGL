@@ -8,17 +8,23 @@ uniform vec3 LightPosition;
 uniform vec3 CameraPosition;
 uniform vec4 SpecularColor;
 uniform float SpecularPower;
+
 uniform vec4 FogColor;
+
 uniform float LightInnerAngle = 0.75f;
 uniform float LightOuterAngle = 0.25f;
+
+uniform vec4 Albedo;
 
 in VS_OUTPUT
 {
 	vec2 TextureCoordinate;
 	vec3 Normal;
-	vec3 LightLookDirection;
-	float Attenuation;
 	vec3 WorldPosition;
+	float Attenuation;
+
+	vec3 LightLookDirection;
+	
 	float FogAmount;
 } IN;
 
@@ -43,7 +49,7 @@ void main()
 
 	vec3 lightLookDirection = normalize(IN.LightLookDirection);
 
-	vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
+	vec4 sampledColor = vec4(mix(texture(ColorTextureSampler, IN.TextureCoordinate).rgb, Albedo.rgb, Albedo.a), 1);
 	vec3 ambient = AmbientColor.rgb * sampledColor.rgb;
 	vec3 diffuse = clamp(LightColor.rgb * n_dot_l * sampledColor.rgb, 0.0f, 1.0f) * IN.Attenuation;	
 	

@@ -27,9 +27,6 @@
     <ClCompile Include="PointLightDemo.cpp">
       <Filter>Demos</Filter>
     </ClCompile>
-    <ClCompile Include="PointLightEffect.cpp">
-      <Filter>ShaderPrograms</Filter>
-    </ClCompile>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -40,21 +37,12 @@
     <ClInclude Include="PointLightDemo.h">
       <Filter>Demos</Filter>
     </ClInclude>
-    <ClInclude Include="PointLightEffect.h">
-      <Filter>ShaderPrograms</Filter>
-    </ClInclude>
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="PlanetSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="Content\Effects\PointLightDemo.vert">
-      <Filter>Content\Effects</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Content\Effects\PointLightDemo.frag">
-      <Filter>Content\Effects</Filter>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="Content\Textures\Earthatday.png">
       <Filter>Content\Textures</Filter>
     </CopyFileToFolders>
@@ -120,6 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Effects\EmissiveTest.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\PointLight.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="Content\Effects\PointLight.vert">
       <Filter>Content\Effects</Filter>
     </None>
   </ItemGroup>

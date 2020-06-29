@@ -3,11 +3,12 @@
 #include "DrawableGameComponent.h"
 #include "SpotLightEffect.h"
 #include "SpotLightEffectAlbedo.h"
+#include "PointLightEffect.h"
 #include "DepthPass.h"
 #include "ColorHelper.h"
 #include "TextureProjector.h"
 #include "ProjectingLight.h"
-//#include "MovableGameObject.h"
+#include "MovableGameObject.h"
 #include "ProjectingLight.h"
 #include "ColorHelper.h"
 #include "Game.h"
@@ -19,7 +20,7 @@ namespace Library
 	class SpotLight;
 	class ProxyModel;
 
-	class RenderedMesh final : public DrawableGameComponent//, public MovableGameObject
+	class RenderedMesh final : public DrawableGameComponent, public MovableGameObject
 	{
 		RTTI_DECLARATIONS(RenderedMesh, DrawableGameComponent)
 
@@ -40,20 +41,6 @@ namespace Library
 
 		void SetAmbientLight(std::shared_ptr<Light> newLight);
 		void SetSpotLight(std::shared_ptr<ProjectingLight> newLight);
-
-		const glm::vec3& Position() const;
-		const glm::vec3& Direction() const;
-		const glm::vec3& Up() const;
-		const glm::vec3& Right() const;
-
-		const glm::mat4& ViewMatrix() const;
-
-		virtual void SetPosition(float x, float y, float z);
-		virtual void SetPosition(const glm::vec3& position);
-
-		virtual void Reset();
-		virtual void UpdateViewMatrix();
-		virtual void ApplyRotation(const glm::mat4& transform);
 
 	protected:
 
@@ -77,13 +64,12 @@ namespace Library
 
 		glm::mat4 mWorldMatrix{ 1 };
 		glm::vec4 mSpecularColor = Library::ColorHelper::White;
+		
 		SpotLightEffect mShaderProgram;
-		SpotLightEffectAlbedo mShaderProgramAlbedo;
 		DepthPass mShaderProgramDepth;
+
 		GLuint mVertexArrayObject = 0;
 		GLuint mVertexBuffer = 0;
-		GLuint mVertexArrayObjectDepth = 0;
-		GLuint mVertexBufferDepth = 0;
 		GLuint mIndexBuffer = 0;
 		std::size_t mIndexCount = 0;
 

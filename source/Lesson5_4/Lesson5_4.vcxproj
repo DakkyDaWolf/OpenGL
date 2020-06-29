@@ -88,7 +88,7 @@
       </EntryPointSymbol>
     </Link>
     <PreBuildEvent>
-      <Command>IF EXIST "$(ProjectDir)..\Library.Win32\Content" xcopy /E /Y "$(ProjectDir)..\Library.Win32\Content" "$(OutDir)Content\"
+      <Command>IF EXIST "$(ProjectDir)..\Library.Shared\Content" xcopy /E /Y "$(ProjectDir)..\Library.Shared\Content" "$(OutDir)Content\"
 IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content\"</Command>
     </PreBuildEvent>
     <FxCompile>
@@ -118,7 +118,7 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
       </EntryPointSymbol>
     </Link>
     <PreBuildEvent>
-      <Command>IF EXIST "$(ProjectDir)..\Library.Win32\Content" xcopy /E /Y "$(ProjectDir)..\Library.Win32\Content" "$(OutDir)Content\"
+      <Command>IF EXIST "$(ProjectDir)..\Library.Shared\Content" xcopy /E /Y "$(ProjectDir)..\Library.Shared\Content" "$(OutDir)Content\"
 IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content\"</Command>
     </PreBuildEvent>
     <FxCompile>
@@ -152,7 +152,7 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>IF EXIST "$(ProjectDir)..\Library.Win32\Content" xcopy /E /Y "$(ProjectDir)..\Library.Win32\Content" "$(OutDir)Content\"
+      <Command>IF EXIST "$(ProjectDir)..\Library.Shared\Content" xcopy /E /Y "$(ProjectDir)..\Library.Shared\Content" "$(OutDir)Content\"
 IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content\"</Command>
     </PreBuildEvent>
     <FxCompile>
@@ -186,7 +186,7 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>IF EXIST "$(ProjectDir)..\Library.Win32\Content" xcopy /E /Y "$(ProjectDir)..\Library.Win32\Content" "$(OutDir)Content\"
+      <Command>IF EXIST "$(ProjectDir)..\Library.Shared\Content" xcopy /E /Y "$(ProjectDir)..\Library.Shared\Content" "$(OutDir)Content\"
 IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content\"</Command>
     </PreBuildEvent>
     <FxCompile>
@@ -212,7 +212,6 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="PlanetSystem.cpp" />
     <ClCompile Include="PointLightDemo.cpp" />
-    <ClCompile Include="PointLightEffect.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
   </ItemGroup>
@@ -221,32 +220,7 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClInclude Include="Planet.h" />
     <ClInclude Include="PlanetSystem.h" />
     <ClInclude Include="PointLightDemo.h" />
-    <ClInclude Include="PointLightEffect.h" />
     <ClInclude Include="RenderingGame.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="Content\Effects\PointLightDemo.frag">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Content\Effects</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Content\Effects</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)Content\Effects</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Content\Effects</DestinationFolders>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Content\Effects\PointLightDemo.vert">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Content\Effects</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Content\Effects</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)Content\Effects</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Content\Effects</DestinationFolders>
-    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library.Win32\Library.Win32.vcxproj">
@@ -310,6 +284,8 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Effects\EmissiveTest.frag" />
+    <None Include="Content\Effects\PointLight.frag" />
+    <None Include="Content\Effects\PointLight.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

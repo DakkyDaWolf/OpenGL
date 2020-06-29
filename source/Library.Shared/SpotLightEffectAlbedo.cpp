@@ -62,13 +62,10 @@ namespace Library
 		SHADER_VARIABLE_INSTANTIATE(LightFalloffRange)
 		SHADER_VARIABLE_INSTANTIATE(Albedo)
 
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position));
+		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionNormal), (void*)offsetof(VertexPositionTextureNormal, Position));
 		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
 
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, TextureCoordinates));
-		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
-
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Normal), 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Normal));
+		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Normal), 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionNormal), (void*)offsetof(VertexPositionTextureNormal, Normal));
 		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Normal));
 	}
 }

@@ -30,10 +30,19 @@ namespace Library
 		float AttenuationRadius() const;
 		void SetAttenuationRadius(float radius);
 
+		GLuint FrameBuffer() const;
+		GLuint DepthMapTexture() const;
+		GLuint DepthMapWidth() const;
+		GLuint DepthMapHeight() const;
+
 		inline static const float DefaultInnerAngle = 0.75f;
 		inline static const float DefaultOuterAngle = 0.25f;
 
 	protected:
+		GLuint mDepthMapFBOID = 0;
+		GLuint mDepthMapTextureID = 0;
+		GLuint mDepthMapW = 1024, mDepthMapH = 1024;
+
 
 		float mInnerAngle = DefaultInnerAngle;
 		float mOuterAngle = DefaultOuterAngle;

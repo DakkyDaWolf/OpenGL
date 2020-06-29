@@ -11,7 +11,7 @@ namespace Library
 	TextureProjector::TextureProjector(Game& game, float fieldOfView, float nearPlaneDistance, float farPlaneDistance, size_t resolution) :
 		PerspectiveCamera(game, fieldOfView, 1.f, nearPlaneDistance, farPlaneDistance)
 	{
-		mDrawTarget = Framebuffer::CreateFramebuffer(resolution, resolution);
+		mDrawTarget = Framebuffer::CreateFramebuffer(GLuint(resolution), GLuint(resolution));
 	}
 
 

@@ -25,6 +25,7 @@ namespace Library
 		SHADER_VARIABLE_DECLARATION(LightInnerAngle)
 		SHADER_VARIABLE_DECLARATION(LightOuterAngle)
 		SHADER_VARIABLE_DECLARATION(LightFalloffRange)
+		SHADER_VARIABLE_DECLARATION(Albedo)
 
 	public:
 		SpotLightEffect();

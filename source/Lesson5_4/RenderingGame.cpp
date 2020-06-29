@@ -41,8 +41,6 @@ namespace Rendering
 		auto planetSystem = make_shared<PlanetSystem>(*this, camera);
 		mComponents.push_back(planetSystem);
 
-		mComponents.push_back(make_shared<DebugTexture>(*this));
-
 		Game::Initialize();
 
 		camera->SetPosition(0, 30, 50);

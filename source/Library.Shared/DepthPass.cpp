@@ -24,7 +24,13 @@ namespace Library
 
         SHADER_VARIABLE_INSTANTIATE(WorldViewProjection)
 
-        glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPosition), (void*)offsetof(VertexPositionColor, Position));
+        glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position));
         glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
+
+        glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, TextureCoordinates));
+        glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
+
+        glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Normal), 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Normal));
+        glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Normal));
     }
 }

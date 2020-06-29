@@ -4,7 +4,7 @@
 
 namespace Library
 {
-	class Rectangle final
+	class Rectangle
 	{
 	public:
 		std::int32_t X;

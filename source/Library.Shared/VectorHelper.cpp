@@ -38,6 +38,12 @@ namespace Library
 
 	const vec4 Vector4Helper::Zero = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 	const vec4 Vector4Helper::One = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	const vec4 Vector4Helper::Forward = vec4(Vector3Helper::Forward, 0.0f);
+	const vec4 Vector4Helper::Backward = vec4(Vector3Helper::Backward, 0.0f);
+	const vec4 Vector4Helper::Right = vec4(Vector3Helper::Right, 0.0f);
+	const vec4 Vector4Helper::Left = vec4(Vector3Helper::Left, 0.0f);
+	const vec4 Vector4Helper::Up = vec4(Vector3Helper::Up, 0.0f);
+	const vec4 Vector4Helper::Down = vec4(Vector3Helper::Down, 0.0f);
 
 	string Vector4Helper::ToString(const vec4& vector)
 	{

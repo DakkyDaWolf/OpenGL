@@ -38,11 +38,6 @@ namespace Rendering
 	{
 		// Build the shader programs
 
-		//vector<ShaderDefinition> shaders;
-		//shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/NormalMappingDemo.vert"));
-		//shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/NormalMappingDemo.frag"));
-		//mNormalMappingEffect.BuildProgram(shaders);
-
 		vector<ShaderDefinition> shaders;
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/ShadowcastingDirectional.vert"));
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/ShadowcastingDirectional.frag"));
@@ -74,24 +69,7 @@ namespace Rendering
 		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		// Create the depth mapping vertex array object
-		glGenVertexArrays(1, &mDepthMappingVAO);
-		glBindVertexArray(mDepthMappingVAO);
-
-		// Create the depth mapping vertex buffer
-		const VertexPosition depthMappingVertices[] =
-		{
-			VertexPosition(vec4(-1.0f, 0.1f, 0.0f, 1.0f)),
-			VertexPosition(vec4(-1.0f, 2.1f, 0.0f, 1.0f)),
-			VertexPosition(vec4(1.0f, 2.1f, 0.0f, 1.0f)),
-			VertexPosition(vec4(1.0f, 0.1f, 0.0f, 1.0f))
-		};
-
-		VertexPosition::CreateVertexBuffer(depthMappingVertices, mDepthMappingVertexBuffer);
-		mDepthPass.Initialize(mDepthMappingVAO);
-
 		glBindVertexArray(0);
-
 
 		// Create the normal mapping vertex array object
 		glGenVertexArrays(1, &mShadowMappingVAO);
@@ -100,10 +78,10 @@ namespace Rendering
 		// Create the normal mapping vertex buffer
 		const VertexPositionTextureNormalTangentBinormal shadowMappingVertices[] =
 		{
-			VertexPositionTextureNormalTangentBinormal(vec4(-5.0f, 0.f, 0.0f, 1.0f), vec2(0.0f, 1.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right),
-			VertexPositionTextureNormalTangentBinormal(vec4(-5.0f, 10.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right),
-			VertexPositionTextureNormalTangentBinormal(vec4(5.0f, 10.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right),
-			VertexPositionTextureNormalTangentBinormal(vec4(5.0f, 0.f, 0.0f, 1.0f), vec2(1.0f, 1.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right)
+			VertexPositionTextureNormalTangentBinormal(vec4(-10.0f, 0.f, 0.0f, 1.0f), vec2(0.0f, 1.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right),
+			VertexPositionTextureNormalTangentBinormal(vec4(-10.0f, 20.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right),
+			VertexPositionTextureNormalTangentBinormal(vec4(10.0f, 20.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right),
+			VertexPositionTextureNormalTangentBinormal(vec4(10.0f, 0.f, 0.0f, 1.0f), vec2(1.0f, 1.0f), Vector3Helper::Backward, Vector3Helper::Down, Vector3Helper::Right)
 		};
 
 		VertexPositionTextureNormalTangentBinormal::CreateVertexBuffer(shadowMappingVertices, mShadowMappingVertexBuffer);
@@ -140,27 +118,24 @@ namespace Rendering
 		mProxyModel->SetPosition(0.0f, 5.0, 15.0f);
 		mProxyModel->ApplyRotation(rotate(mat4(1), half_pi<float>(), Vector3Helper::Up));
 
-		mDog = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Wolf.obj");
+		mDog = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Wolf.obj", "Content/Textures/Wolf.png");
 		mDog->Initialize();
 		mDog->SetPosition(0, 0, 7.f);
+		mDog->ApplyScale(10.f);
+		//mDog->SetAlbedo(ColorHelper::Cyan);
 		mDog->SetAmbientLight(mAmbientLight);
 		mDog->SetSpotLight(mSpotLight);
-		//mDog->ApplyScale(10.f);
+
+		mDebugRect = make_shared<ScreenRect>(*mGame);
+		mDebugRect->Initialize();
+		mDebugRect->SetDimensions(vec2(200.f, 200.f));
+		mDebugRect->SetPosition(vec2(50.f, 50.f));
+		mDebugRect->SetTexture(mSpotLight->DepthMapTexture());
 
 		// Attach the keyboard handler
 		using namespace std::placeholders;
 		mKeyboardHandler = bind(&GraphicsProgram::OnKey, this, _1, _2, _3, _4);
 		mGame->AddKeyboardHandler(mKeyboardHandler);
-
-		/*glGenFramebuffers(1, &mDepthMapFBOID);
-		glGenTextures(1, &mDepthMapTextureID);
-		glBindTexture(GL_TEXTURE_2D, mDepthMapTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, mDepthMapW, mDepthMapH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);*/
 	}
 
 	void GraphicsProgram::Update(const GameTime& gameTime)
@@ -175,6 +150,15 @@ namespace Rendering
 
 	void GraphicsProgram::Draw(const GameTime& gameTime)
 	{
+		glViewport(0, 0, mSpotLight->DepthMapWidth(), mSpotLight->DepthMapHeight());
+		glBindFramebuffer(GL_FRAMEBUFFER, mSpotLight->FrameBuffer());
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		//mDog->DepthTest(*mSpotLight);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 		if (!mShowShadowMapping)
 		{
 			glBindVertexArray(mShadowMappingVAO);
@@ -216,29 +200,10 @@ namespace Rendering
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
-		else
-		{
-			/*glBindVertexArray(mDepthMappingVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, mDepthMappingVertexBuffer);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-
-			mDepthPass.Use();
-
-			mat4 wvp = mSpotLight->ViewProjectionMatrix() * mWorldMatrix;
-			mDepthPass.WorldViewProjection() << wvp;
-
-			glEnable(GL_CULL_FACE);
-			glFrontFace(GL_CCW);
-
-			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-
-			mDog->DepthTest(*mSpotLight);*/
-
-		}
 
 		mProxyModel->Draw(gameTime);
 		mDog->Draw(gameTime);
+		mDebugRect->Draw(gameTime);
 	}
 
 	float GraphicsProgram::AmbientLightIntensity() const
@@ -390,25 +355,6 @@ namespace Rendering
 
 	void GraphicsProgram::RenderDepthMap()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mDepthMapFBOID);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthMapTextureID, 0);
-
-		glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		glViewport(0, 0, mDepthMapW, mDepthMapH);
-		glBindFramebuffer(GL_FRAMEBUFFER, mDepthMapFBOID);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		//ConfigureShaderAndMatrices();
-		//RenderScene();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// 2. then render scene as normal with shadow mapping (using depth map)
-		glViewport(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight());
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//ConfigureShaderAndMatrices();
-		glBindTexture(GL_TEXTURE_2D, mDepthMapTextureID);
-		//RenderScene();
+		
 	}
 }
