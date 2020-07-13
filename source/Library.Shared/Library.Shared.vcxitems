@@ -71,7 +71,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLightEffect.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SpotLightEffectAlbedo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpotLightShadowedEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureProjector.cpp" />
@@ -126,7 +126,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLightEffect.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SpotLightEffectAlbedo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpotLightShadowedEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Texture.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Texture2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureProjector.h" />
@@ -145,18 +145,18 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\BasicEffect.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\DepthPass.frag" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\DepthPass.vert" />
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\ShadowcastingDirectional.frag" />
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\ShadowcastingDirectional.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\Skybox.frag" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\Skybox.vert" />
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffect.frag" />
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffect.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightBasic.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightBasic.vert" />
     <Media Include="$(MSBuildThisFileDirectory)Content\Models\pallet.blend">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
     </Media>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightShadowed.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightShadowed.vert" />
     <None Include="$(MSBuildThisFileDirectory)DrawableGameComponent.inl" />
     <None Include="$(MSBuildThisFileDirectory)Enum.inl" />
     <None Include="$(MSBuildThisFileDirectory)Game.inl" />

@@ -31,6 +31,12 @@ namespace Library
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthMapTextureID, 0);
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			throw std::runtime_error("Framebuffer invalid");
+		}
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 

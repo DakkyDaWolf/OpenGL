@@ -20,6 +20,8 @@ namespace Library
         float& MouseSensitivity();
         float& RotationRate();
         float& MovementRate();
+
+        //virtual void ApplyRotation(const glm::mat4& transform) override;
         
         virtual void Initialize() override;
         virtual void Update(const GameTime& gameTime) override;

@@ -25,6 +25,7 @@ namespace Rendering
 	void GraphicsGame::Initialize()
 	{
 		auto camera = make_shared<FirstPersonCamera>(*this);
+		camera->Initialize();
 		mComponents.push_back(camera);
 		mServices.AddService(Camera::TypeIdClass(), camera.get());
 
@@ -58,11 +59,13 @@ namespace Rendering
 				ImGui::Text("Rotate Projector (Arrow Keys)");
 				AddImGuiTextField("Toggle Grid (G): "s, (grid->Visible() ? "Visible"s : "Not Visible"s));
 				AddImGuiTextField("Toggle Skybox (K): "s, (skybox->Visible() ? "Visible"s : "Not Visible"s));
-				AddImGuiTextField("Ambient Light Intensity (+PgUp/-PgDown): "s, graphicsProgram->AmbientLightIntensity(), 2);
-				AddImGuiTextField("Camera Movement Rate (+U/-I): "s, camera->MovementRate());
-				AddImGuiTextField("Camera Mouse Sensitivity (+O/-P): "s, camera->MouseSensitivity());
-				AddImGuiTextField("ShadowMapping: "s, (graphicsProgram->ShowingShadowMapping() ? "On" : "Off"));
-
+				AddImGuiTextField("Ambient Light Intensity ( +PgUp / -PgDown ): "s, graphicsProgram->AmbientLightIntensity(), 2);
+				//AddImGuiTextField("Camera Movement Rate (+U/-I): "s, camera->MovementRate());
+				//AddImGuiTextField("Camera Mouse Sensitivity (+O/-P): "s, camera->MouseSensitivity());
+				AddImGuiTextField("ShadowMapping (Space): "s, (graphicsProgram->ShowingShadowMapping() ? "On" : "Off"));
+				AddImGuiTextField("Shadow depth bias ( -[ / +] ): "s, graphicsProgram->DepthBias(), 6);
+				AddImGuiTextField("Controlled Object (Tab): "s, graphicsProgram->ControlledObject() ? graphicsProgram->ControlledObject()->Name() : "none");
+				
 				ImGui::End();
 			});
 		imGui->AddRenderBlock(helpTextImGuiRenderBlock);

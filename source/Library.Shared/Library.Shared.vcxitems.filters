@@ -172,9 +172,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DepthPass.cpp">
       <Filter>ShaderPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)SpotLightEffectAlbedo.cpp">
-      <Filter>ShaderPrograms</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
@@ -194,6 +191,9 @@
       <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureRectEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpotLightShadowedEffect.cpp">
       <Filter>ShaderPrograms</Filter>
     </ClCompile>
   </ItemGroup>
@@ -331,9 +331,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DepthPass.h">
       <Filter>ShaderPrograms</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SpotLightEffectAlbedo.h">
-      <Filter>ShaderPrograms</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h">
       <Filter>Cameras</Filter>
     </ClInclude>
@@ -353,6 +350,9 @@
       <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureRectEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpotLightShadowedEffect.h">
       <Filter>ShaderPrograms</Filter>
     </ClInclude>
   </ItemGroup>
@@ -390,22 +390,10 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\DepthPass.vert">
       <Filter>Content\Effects</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\ShadowcastingDirectional.frag">
-      <Filter>Content\Effects</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\ShadowcastingDirectional.vert">
-      <Filter>Content\Effects</Filter>
-    </None>
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\Skybox.frag">
       <Filter>Content\Effects</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\Skybox.vert">
-      <Filter>Content\Effects</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffect.frag">
-      <Filter>Content\Effects</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotLightEffect.vert">
       <Filter>Content\Effects</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTexture.frag">
@@ -418,6 +406,18 @@
       <Filter>Content\Effects</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTextureDepth.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightBasic.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightBasic.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightShadowed.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightShadowed.vert">
       <Filter>Content\Effects</Filter>
     </None>
   </ItemGroup>

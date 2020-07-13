@@ -24,33 +24,49 @@ namespace Library
 		virtual ~MovableGameObject() = default;
 
 		const glm::vec3& Position() const;
-		const glm::vec4& Direction() const;
+		glm::vec4 Direction() const;
+		const glm::mat4& Rotation() const;
+		const glm::vec4& Forward() const;
 		const glm::vec4& Up() const;
 		const glm::vec4& Right() const;
-
-		const glm::mat4& ViewMatrix();
 		const glm::mat4& Transform();
 
-		virtual void SetPosition(float x, float y, float z);
-		virtual void SetPosition(const glm::vec3& position);
-		virtual void ApplyTranslation(float x, float y, float z);
-		virtual void ApplyTranslation(const glm::vec3& translation);
+		void SetPosition(float x, float y, float z);
+		void SetPosition(const glm::vec3& position);
+		void ApplyTranslation(float x, float y, float z);
+		void ApplyTranslation(const glm::vec3& translation);
+
 		void ApplyScale(float newScale);
 		void SetScale(float newScale);
 		void ApplyScale(const glm::vec3& newScale);
 		void SetScale(const glm::vec3& newScale);
-		virtual void ApplyRotation(const glm::mat4& transform);
+		void ApplyRotation(const glm::mat4& transform);
+
+		void MarkDirty();
+
+		void Orphan();
+		void Adopt(MovableGameObject& newChild);
+		void Disown(MovableGameObject& oldChild);
+		void DisownAt(size_t index);
+		bool IsAncestorOf(const MovableGameObject& other) const;
+		bool IsDescendantOf(const MovableGameObject& other) const;
 
 		virtual void Update(const GameTime& gameTime) override;
+
+		void Rename(const std::string& name);
+		const std::string& Name() const;
 
 		virtual void Reset();
 		virtual void ResetRotation();
 		virtual void ResetPosition();
 		virtual void ResetScale();
 		virtual void Initialize() override;
-		virtual void UpdateViewMatrix();
+		virtual void UpdateTransform();
 
 	protected:
+		std::string mName;
+		MovableGameObject* mParent{ nullptr };
+		std::vector<MovableGameObject*> mChildren;
 
 		glm::vec3 mScale = glm::vec3(1);
 		glm::vec3 mPosition = Vector3Helper::Zero;
@@ -59,11 +75,9 @@ namespace Library
 		glm::vec4 mUp = glm::vec4(Vector3Helper::Up, 0);
 		glm::vec4 mRight = glm::vec4(Vector3Helper::Right, 0);
 
-		glm::mat4 mViewMatrix{ 1 };
 		glm::mat4 mTransform{ 1 };
 
-		bool mTransformDirty{ true };
-		bool mViewMatrixDataDirty{ true };
+		bool mTransformDataDirty{ true };
 	};
 }
 

@@ -20,6 +20,7 @@ namespace Library
 		virtual ~ScreenRect() = default;
 
 		virtual void Initialize() override;
+		void Initialize(bool inverted);
 		virtual void Draw(const GameTime& gameTime) override;
 
 		void SetTexture(GLuint textureID);
@@ -34,6 +35,7 @@ namespace Library
 		glm::vec2 mPosition{ 0,0 };
 		glm::vec2 mDimensions{ 1,1 };
 		bool mScreenspaceTransformDirty = true;
+		bool mInverseTextureY = false;
 
 		TextureRectEffect mShaderProgram;
 		GLuint mTextureID = 0;

@@ -48,11 +48,26 @@ namespace Library
 			mTextured = true;
 		}
 
+		// Create the trilinear texture sampler
+		glGenSamplers(1, &mTrilinearSampler);
+		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		glGenSamplers(1, &mShadowSampler);
+		//glSamplerParameteri(mShadowSampler, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+		//glSamplerParameteri(mShadowSampler, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+		glSamplerParameteri(mShadowSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glSamplerParameteri(mShadowSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glSamplerParameteri(mShadowSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glSamplerParameteri(mShadowSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 		// Build the shader programs
 		{
 			vector<ShaderDefinition> shaders;
-			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotLightEffect.vert"));
-			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotLightEffect.frag"));
+			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotlightBasic.vert"));
+			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightBasic.frag"));
 			mShaderProgram.BuildProgram(shaders);
 		}
 		{
@@ -60,6 +75,12 @@ namespace Library
 			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/DepthPass.vert"));
 			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/DepthPass.frag"));
 			mShaderProgramDepth.BuildProgram(shaders);
+		}
+		{
+			vector<ShaderDefinition> shaders;
+			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotlightShadowed.vert"));
+			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightShadowed.frag"));
+			mShaderProgramShadowed.BuildProgram(shaders);
 		}
 
 		// Load the model
@@ -77,6 +98,7 @@ namespace Library
 		glGenVertexArrays(1, &mVertexArrayObject);
 		mShaderProgram.Initialize(mVertexArrayObject);
 		mShaderProgramDepth.Initialize(mVertexArrayObject);
+		mShaderProgramShadowed.Initialize(mVertexArrayObject);
 		glBindVertexArray(0);
 
 		mWorldMatrix = mat4(1);
@@ -86,10 +108,6 @@ namespace Library
 
 	void RenderedMesh::Update(const Library::GameTime& gameTime)
 	{
-		if (mViewMatrixDataDirty)
-		{
-			UpdateViewMatrix();
-		}
 		MovableGameObject::Update(gameTime);
 	}
 
@@ -112,10 +130,10 @@ namespace Library
 		mShaderProgram.FogStart() << mFogStart;
 		mShaderProgram.FogRange() << mFogRange;
 
-		mShaderProgram.AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : glm::vec4(1));
+		mShaderProgram.AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : vec4(vec3(mAmbientIntensity), 1));
 
 		mShaderProgram.LightColor() << (mSpotlight ? mSpotlight->Color() : glm::vec4(0));
-		mShaderProgram.LightLookDirection() << (mSpotlight ? mSpotlight->Direction() : glm::vec3(1, 0, 0));
+		mShaderProgram.LightLookDirection() << (mSpotlight ? mSpotlight->Forward() : glm::vec3(1, 0, 0));
 		mShaderProgram.LightPosition() << (mSpotlight ? mSpotlight->Position() : glm::vec3(0));
 		mShaderProgram.LightFalloffRange() << (mSpotlight ? mSpotlight->AttenuationRadius() : 1.f);
 		mShaderProgram.LightInnerAngle() << (mSpotlight ? mSpotlight->InnerAngle() : 0.25f);
@@ -128,11 +146,52 @@ namespace Library
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mColorTextureID);
 
-
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	}
 
+	void RenderedMesh::DrawShadowed(const Library::GameTime& /*gameTime*/)
+	{
+		glBindVertexArray(mVertexArrayObject);
+		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
+
+		mShaderProgramShadowed.Use();
+
+		mat4 wvp = mCamera->ViewProjectionMatrix() * Transform() * mWorldMatrix;
+		mShaderProgramShadowed.WorldViewProjection() << wvp;
+		mShaderProgramShadowed.World() << Transform() * mWorldMatrix;
+
+		mShaderProgramShadowed.CameraPosition() << mCamera->Position();
+		mShaderProgramShadowed.SpecularColor() << mSpecularColor;
+		mShaderProgramShadowed.SpecularPower() << mSpecularPower;
+
+		mShaderProgramShadowed.FogColor() << mFogColor;
+		mShaderProgramShadowed.FogStart() << mFogStart;
+		mShaderProgramShadowed.FogRange() << mFogRange;
+
+		mShaderProgramShadowed.AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : glm::vec4(1));
+
+		mShaderProgramShadowed.LightColor() << (mSpotlight ? mSpotlight->Color() : glm::vec4(0));
+		mShaderProgramShadowed.LightLookDirection() << (mSpotlight ? mSpotlight->Forward() : glm::vec3(1, 0, 0));
+		mShaderProgramShadowed.LightPosition() << (mSpotlight ? mSpotlight->Position() : glm::vec3(0));
+		mShaderProgramShadowed.LightFalloffRange() << (mSpotlight ? mSpotlight->AttenuationRadius() : 1.f);
+		mShaderProgramShadowed.LightInnerAngle() << (mSpotlight ? mSpotlight->InnerAngle() : 0.25f);
+		mShaderProgramShadowed.LightOuterAngle() << (mSpotlight ? mSpotlight->OuterAngle() : 0.3f);
+		mShaderProgramShadowed.LightWVP() << (mSpotlight ? mSpotlight->ViewProjectionMatrix() : mat4(1));
+		mShaderProgramShadowed.ShadowDepthTolerance() << mShadowDepthBias;
+
+		mShaderProgramShadowed.Albedo() << mAlbedo;
+
+		glBindSampler(0, mTrilinearSampler);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mColorTextureID);
+
+		glBindSampler(1, mTrilinearSampler);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, (mSpotlight ? mSpotlight->DepthMapTexture() : 0));
+
+		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 
@@ -150,9 +209,6 @@ namespace Library
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
-
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
@@ -163,6 +219,11 @@ namespace Library
 	void RenderedMesh::SetAlbedo(glm::vec4 newColor)
 	{
 		mAlbedo = newColor;
+	}
+
+	void RenderedMesh::SetDepthBias(float bias)
+	{
+		mShadowDepthBias = bias;
 	}
 
 	void RenderedMesh::SetAmbientLight(std::shared_ptr<Light> newLight)

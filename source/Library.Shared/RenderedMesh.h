@@ -2,7 +2,7 @@
 #include <limits>
 #include "DrawableGameComponent.h"
 #include "SpotLightEffect.h"
-#include "SpotLightEffectAlbedo.h"
+#include "SpotLightShadowedEffect.h"
 #include "PointLightEffect.h"
 #include "DepthPass.h"
 #include "ColorHelper.h"
@@ -36,23 +36,19 @@ namespace Library
 		virtual void Initialize() override;
 		virtual void Update(const Library::GameTime& gameTime) override;
 		virtual void Draw(const Library::GameTime& gameTime) override;
+		virtual void DrawShadowed(const Library::GameTime& gameTime);
 		void DepthTest(ProjectingLight& lightSource);
 
 		void SetAlbedo(glm::vec4 newColor);
+		void SetDepthBias(float bias);
 
 		void SetAmbientLight(std::shared_ptr<Light> newLight);
 		void SetSpotLight(std::shared_ptr<ProjectingLight> newLight);
 
-	protected:
-
-		glm::vec3 mPosition;
-		glm::vec3 mDirection;
-		glm::vec3 mUp;
-		glm::vec3 mRight;
-
-		glm::mat4 mViewMatrix{ 1 };
-
-		bool mViewMatrixDataDirty{ true };
+		float mSpecularPower = 25.0f;
+		float mFogStart = 80.0f;
+		float mFogRange = 100.0f;
+		float mAmbientIntensity = 0.5f;
 
 	private:
 		int mMeshIndex;
@@ -68,16 +64,16 @@ namespace Library
 		glm::vec4 mSpecularColor = Library::ColorHelper::White;
 		
 		SpotLightEffect mShaderProgram;
+		SpotLightShadowedEffect mShaderProgramShadowed;
 		DepthPass mShaderProgramDepth;
+
+		float mShadowDepthBias = 0.001f;
 
 		GLuint mVertexArrayObject = 0;
 		GLuint mVertexBuffer = 0;
 		GLuint mIndexBuffer = 0;
 		std::size_t mIndexCount = 0;
 
-		float mSpecularPower = 25.0f;
-		float mFogStart = 80.0f;
-		float mFogRange = 100.0f;
 		glm::vec4 mFogColor = Library::ColorHelper::CornflowerBlue;
 		glm::vec4 mAlbedo = ColorHelper::White;
 
@@ -85,6 +81,7 @@ namespace Library
 
 		GLuint mNormalMap = 0;
 		GLuint mTrilinearSampler = 0;
+		GLuint mShadowSampler = 0;
 
 	};
 

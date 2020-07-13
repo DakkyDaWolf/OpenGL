@@ -10,13 +10,13 @@ namespace Library
 	RTTI_DEFINITIONS(Camera)
 
 	Camera::Camera(Game& game) :
-		GameComponent(game),
+		MovableGameObject(game),
 		mNearPlaneDistance(DefaultNearPlaneDistance), mFarPlaneDistance(DefaultFarPlaneDistance)
 	{
 	}
 
 	Camera::Camera(Game& game, float nearPlaneDistance, float farPlaneDistance) :
-		GameComponent(game),
+		MovableGameObject(game),
 		mNearPlaneDistance(nearPlaneDistance), mFarPlaneDistance(farPlaneDistance)
 	{
 	}
@@ -33,26 +33,6 @@ namespace Library
 		mProjectionMatrixDataDirty = true;
 	}
 
-	const glm::vec3& Camera::Position() const
-	{
-		return mPosition;
-	}
-
-	const glm::vec3& Camera::Direction() const
-	{
-		return mDirection;
-	}
-
-	const glm::vec3& Camera::Up() const
-	{
-		return mUp;
-	}
-
-	const glm::vec3& Camera::Right() const
-	{
-		return mRight;
-	}
-
 	float Camera::NearPlaneDistance() const
 	{
 		return mNearPlaneDistance;
@@ -63,75 +43,72 @@ namespace Library
 		return mFarPlaneDistance;
 	}
 
-	const glm::mat4& Camera::ViewMatrix() const
+	const glm::mat4& Camera::ViewMatrix()
 	{
+		if (mTransformDataDirty) UpdateTransform();
 		return mViewMatrix;
 	}
 
-	const glm::mat4&Camera::ProjectionMatrix() const
+	const glm::mat4& Camera::ProjectionMatrix()
 	{
+		if (mProjectionMatrixDataDirty) UpdateProjectionMatrix();
 		return mProjectionMatrix;
 	}
 
-	glm::mat4 Camera::ViewProjectionMatrix() const
+	glm::mat4 Camera::ViewProjectionMatrix()
 	{
-		return mProjectionMatrix * mViewMatrix;
+		return ProjectionMatrix() * ViewMatrix();
 	}
 
-	void Camera::SetPosition(float x, float y, float z)
-	{
-		mPosition = vec3(x, y, z);
-		mViewMatrixDataDirty = true;
-	}
+	//void Camera::ApplyRotation(const glm::mat4& rotation)
+	//{
+	//	mForward = vec4(normalize(vec3(rotation * mForward)), 0);
+	//	mRotation = lookAt(mPosition, mPosition + vec3(mForward), Vector3Helper::Up);
 
-	void Camera::SetPosition(const glm::vec3& position)
+	//	mRight = vec4(normalize(vec3(rotation * Vector4Helper::Right)), 0);
+	//	mUp = vec4(normalize(vec3(rotation * Vector4Helper::Up)), 0);
+
+	//	mViewMatrixDataDirty = true;
+
+	//	vec4 direction = rotation * mForward;
+	//	//rotate forward direction
+
+	//	mForward = vec4(vec3(normalize(direction)), 0);
+	//	//normalize vec4??
+
+	//	vec4 up	= rotation * mUp;
+	//	//rotate up, ok
+	//	mUp = vec4(vec3(normalize(up)), 0);
+	//	//normalize..?
+
+	//	mRight = vec4(cross(vec3(mForward), vec3(mUp)), 0);
+	//	//right is cross of fwd and up, yeah
+	//	mUp = vec4(cross(vec3(mRight), vec3(mForward)), 0);
+	//	mViewMatrixDataDirty = true;
+	//}
+
+	void Camera::Update(const GameTime& gameTime)
 	{
-		mPosition = position;
-		mViewMatrixDataDirty = true;
+		GameComponent::Update(gameTime);
+
+		if (mTransformDataDirty) UpdateTransform();
+		if (mProjectionMatrixDataDirty) UpdateProjectionMatrix();
 	}
 
 	void Camera::Reset()
 	{
-		mPosition = Vector3Helper::Zero;
-		mDirection = Vector3Helper::Forward;
-		mUp = Vector3Helper::Up;
-		mRight = Vector3Helper::Right;
-		mViewMatrixDataDirty = true;
-
-		UpdateViewMatrix();
+		MovableGameObject::Reset();
+		mTransformDataDirty = true;
 	}
 
 	void Camera::Initialize()
 	{
-		UpdateProjectionMatrix();
 		Reset();
 	}
 
-	void Camera::Update(const GameTime& /*gameTime*/)
+	void Camera::UpdateTransform()
 	{
-		if (mViewMatrixDataDirty)
-		{
-			UpdateViewMatrix();
-		}
-	}
-
-	void Camera::UpdateViewMatrix()
-	{
-		vec3 target = mPosition + mDirection;
-		mViewMatrix = lookAt(mPosition, target, mUp);
-		mViewMatrixDataDirty = false;
-	}
-
-	void Camera::ApplyRotation(const glm::mat4& transform)
-	{
-		vec4 direction = transform * vec4(mDirection, 0.0f);
-		mDirection = (vec3)normalize(direction);
-
-		vec4 up	= transform * vec4(mUp, 0.0f);
-		mUp = (vec3)normalize(up);
-
-		mRight = cross(mDirection, mUp);
-		mUp = cross(mRight, mDirection);
-		mViewMatrixDataDirty = true;
+		MovableGameObject::UpdateTransform();
+		mViewMatrix = lookAt(mPosition, mPosition + vec3(mForward), vec3(mUp));
 	}
 }

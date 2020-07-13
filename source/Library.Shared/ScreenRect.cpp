@@ -52,15 +52,31 @@ namespace Library
 		glBindVertexArray(mRectVAO);
 
 		// Create the normal mapping vertex buffer
-		const VertexPositionTexture rectVertices[] =
+		if (mInverseTextureY)
 		{
-			VertexPositionTexture(vec4(0.0f, 0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
-			VertexPositionTexture(vec4(0.0f, 1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
-			VertexPositionTexture(vec4(1.0f, 1.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)),
-			VertexPositionTexture(vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f))
-		};
+			const VertexPositionTexture rectVertices[] =
+			{
+				VertexPositionTexture(vec4(0.0f, 0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
+				VertexPositionTexture(vec4(0.0f, 1.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
+				VertexPositionTexture(vec4(1.0f, 1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)),
+				VertexPositionTexture(vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f))
+			};
 
-		VertexPositionTexture::CreateVertexBuffer(rectVertices, mRectVertexBuffer);
+			VertexPositionTexture::CreateVertexBuffer(rectVertices, mRectVertexBuffer);
+		}
+		else
+		{
+			const VertexPositionTexture rectVertices[] =
+			{
+				VertexPositionTexture(vec4(0.0f, 0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
+				VertexPositionTexture(vec4(0.0f, 1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
+				VertexPositionTexture(vec4(1.0f, 1.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)),
+				VertexPositionTexture(vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f))
+			};
+
+			VertexPositionTexture::CreateVertexBuffer(rectVertices, mRectVertexBuffer);
+		}
+
 		mShaderProgram.Initialize(mRectVAO);
 
 		glBindVertexArray(0);
@@ -79,6 +95,12 @@ namespace Library
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t)* mIndexCount, indices, GL_STATIC_DRAW);
 	}
 
+	void ScreenRect::Initialize(bool inverted)
+	{
+		mInverseTextureY = inverted;
+		Initialize();
+	}
+
 	void ScreenRect::Draw(const GameTime& /*gameTime*/)
 	{
 		glViewport(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight());
@@ -91,12 +113,13 @@ namespace Library
 		mShaderProgram.ScreenspaceProjection() << ScreenspaceTransform();
 
 		glBindSampler(0, mTrilinearSampler);
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
 
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
 
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);

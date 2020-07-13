@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "FirstPersonCamera.h"
 #include "VectorHelper.h"
+#include "glm/gtx/transform.hpp"
 #include "Game.h"
 
 using namespace glm;
@@ -36,8 +37,7 @@ namespace Library
 
     void FirstPersonCamera::Initialize()
     {
-        Camera::Initialize();
-
+        PerspectiveCamera::Initialize();
 		glfwGetCursorPos(mGame->Window(), &mLastCursorX, &mLastCursorY);
     }
 
@@ -95,16 +95,17 @@ namespace Library
 			float elapsedTime = gameTime.ElapsedGameTimeSeconds().count();
 			vec2 rotationVector = rotationAmount * mRotationRate * elapsedTime;
 
-			mat4 rotationMatrix = rotate(mat4(1), rotationVector.y, mRight);
-			rotationMatrix = rotate(rotationMatrix, rotationVector.x, Vector3Helper::Up);
-			ApplyRotation(rotationMatrix);
+			mat4 yawMatrix = rotate(rotationVector.x, Vector3Helper::Up);
+			ApplyRotation(yawMatrix);
+			mat4 pitchMatrix = rotate(rotationVector.y, cross(Vector3Helper::Up, vec3(Direction())));
+			ApplyRotation(pitchMatrix);
 
 			vec3 movement = movementAmount * mMovementRate * elapsedTime;
 
 			vec3 strafe = mRight * movement.x;
 			mPosition += strafe;
 
-			vec3 forward = mDirection * movement.y;
+			vec3 forward = mForward * movement.y;
 			mPosition += forward;
 
 			vec3 up = vec3(0.f, 1.f, 0.f) * movement.z;

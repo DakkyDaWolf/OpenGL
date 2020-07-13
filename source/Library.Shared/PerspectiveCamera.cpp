@@ -16,10 +16,6 @@ namespace Library
 	void PerspectiveCamera::Update(const GameTime& gameTime)
 	{
 		Camera::Update(gameTime);
-		if (mProjectionMatrixDataDirty)
-		{
-			UpdateProjectionMatrix();
-		}
 	}
 
 	float PerspectiveCamera::AspectRatio() const
@@ -46,9 +42,7 @@ namespace Library
 
 	void PerspectiveCamera::UpdateProjectionMatrix()
 	{
-		if (mProjectionMatrixDataDirty)
-		{
-			mProjectionMatrix = perspective(mFieldOfView, mAspectRatio, mNearPlaneDistance, mFarPlaneDistance);
-		}
+		mProjectionMatrix = perspective(mFieldOfView, mAspectRatio, mNearPlaneDistance, mFarPlaneDistance);
+		mProjectionMatrixDataDirty = false;
 	}
 }
