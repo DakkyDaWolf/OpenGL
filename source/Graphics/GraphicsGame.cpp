@@ -57,14 +57,16 @@ namespace Rendering
 
 				ImGui::Text("Camera (WASD + Left-Click-Mouse-Look)");
 				ImGui::Text("Rotate Projector (Arrow Keys)");
-				AddImGuiTextField("Toggle Grid (G): "s, (grid->Visible() ? "Visible"s : "Not Visible"s));
-				AddImGuiTextField("Toggle Skybox (K): "s, (skybox->Visible() ? "Visible"s : "Not Visible"s));
-				AddImGuiTextField("Ambient Light Intensity ( +PgUp / -PgDown ): "s, graphicsProgram->AmbientLightIntensity(), 2);
+				//AddImGuiTextField("Toggle Grid (G): "s, (grid->Visible() ? "Visible"s : "Not Visible"s));
+				//AddImGuiTextField("Toggle Skybox (K): "s, (skybox->Visible() ? "Visible"s : "Not Visible"s));
+				AddImGuiTextField("Ambient Light Intensity ( + / - ): "s, graphicsProgram->AmbientLightIntensity(), 2);
 				//AddImGuiTextField("Camera Movement Rate (+U/-I): "s, camera->MovementRate());
 				//AddImGuiTextField("Camera Mouse Sensitivity (+O/-P): "s, camera->MouseSensitivity());
 				AddImGuiTextField("ShadowMapping (Space): "s, (graphicsProgram->ShowingShadowMapping() ? "On" : "Off"));
 				AddImGuiTextField("Shadow depth bias ( -[ / +] ): "s, graphicsProgram->DepthBias(), 6);
 				AddImGuiTextField("Controlled Object (Tab): "s, graphicsProgram->ControlledObject() ? graphicsProgram->ControlledObject()->Name() : "none");
+				AddImGuiTextField("Deferred Render (R-ctrl): "s, graphicsProgram->DeferredRenderingStatus());
+				AddImGuiTextField("Debugged GBuffer (R-alt): "s, graphicsProgram->DeferredDebugDisplayed());
 				
 				ImGui::End();
 			});

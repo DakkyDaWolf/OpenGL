@@ -11,5 +11,5 @@ out vec4 Color;
 
 void main()
 {     
-    Color = texture(ColorTextureSampler, IN.TextureCoords);
+    Color = vec4(texture(ColorTextureSampler, IN.TextureCoords).rgb, 1);
 } 

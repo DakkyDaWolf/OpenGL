@@ -11,6 +11,8 @@
 #include "MovableGameObject.h"
 #include "ProjectingLight.h"
 #include "ColorHelper.h"
+#include "DeferredFramebuffer.h"
+#include "DeferredEffect.h"
 #include "Game.h"
 
 namespace Library
@@ -37,8 +39,10 @@ namespace Library
 		virtual void Update(const Library::GameTime& gameTime) override;
 		virtual void Draw(const Library::GameTime& gameTime) override;
 		virtual void DrawShadowed(const Library::GameTime& gameTime);
+		virtual void DrawToGBuffer(const Library::GameTime& gameTime);
 		void DepthTest(ProjectingLight& lightSource);
 
+		void SetGBuffer(DeferredFramebuffer& gbuffer);
 		void SetAlbedo(glm::vec4 newColor);
 		void SetDepthBias(float bias);
 
@@ -66,6 +70,9 @@ namespace Library
 		SpotLightEffect mShaderProgram;
 		SpotLightShadowedEffect mShaderProgramShadowed;
 		DepthPass mShaderProgramDepth;
+		DeferredEffect mDeferredProgram;
+
+		DeferredFramebuffer* mDeferredBuffer{ nullptr };
 
 		float mShadowDepthBias = 0.001f;
 

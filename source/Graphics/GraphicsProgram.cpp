@@ -95,6 +95,25 @@ namespace Rendering
 		mDebugRect->SetPosition(vec2(50.f, 50.f));
 		mDebugRect->SetTexture(mSpotLight->DepthMapTexture());
 
+		mGBuffer = make_shared<DeferredFramebuffer>(*mGame);
+		mGBuffer->Initialize();
+
+		mDeferredDisplay = make_shared<DeferredScreen>(*mGame, mCamera, mGBuffer, mSpotLight);
+		mDeferredDisplay->Initialize();
+		mDeferredDisplay->SetAmbientLight(mAmbientLight);
+
+		mDeferredDebugRect = make_shared<ScreenRect>(*mGame);
+		mDeferredDebugRect->Initialize(true);
+		mDeferredDebugRect->SetDimensions(vec2(240.f, 180.f));
+		mDeferredDebugRect->SetPosition(vec2(510.f, 50.f));
+		mDeferredDebugRect->SetTexture(mGBuffer->PositionID());
+
+		for (auto& mesh : mMeshes)
+		{
+			mesh->SetGBuffer(*mGBuffer);
+		}
+		mFlashlight->SetGBuffer(*mGBuffer);
+
 		// Attach the keyboard handler
 		using namespace std::placeholders;
 		mKeyboardHandler = bind(&GraphicsProgram::OnKey, this, _1, _2, _3, _4);
@@ -127,11 +146,13 @@ namespace Rendering
 	void GraphicsProgram::Draw(const GameTime& gameTime)
 	{
 		mSpotLight->ClearBuffer();
+		mGBuffer->ClearBuffer();
 
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
+
 		glCullFace(GL_FRONT);
 
 		for (auto& mesh : mMeshes)
@@ -140,6 +161,11 @@ namespace Rendering
 		}
 
 		glCullFace(GL_BACK);
+
+		for (auto& mesh : mMeshes)
+		{
+			mesh->DrawToGBuffer(gameTime);
+		}
 
 		if (!mShowShadowMapping)
 		{
@@ -157,8 +183,9 @@ namespace Rendering
 		}
 
 		mFlashlight->Draw(gameTime);
-
+		if (mDeferredEnabled) mDeferredDisplay->Draw(gameTime);
 		mDebugRect->Draw(gameTime);
+		mDeferredDebugRect->Draw(gameTime);
 	}
 
 	float GraphicsProgram::AmbientLightIntensity() const
@@ -179,6 +206,16 @@ namespace Rendering
 	bool GraphicsProgram::ShowingShadowMapping() const
 	{
 		return mShowShadowMapping;
+	}
+
+	std::string GraphicsProgram::DeferredRenderingStatus() const
+	{
+		return mDeferredEnabled ? "Enabled" : "Disabled";
+	}
+
+	std::string GraphicsProgram::DeferredDebugDisplayed() const
+	{
+		return gBufferDataNames[mShownGBuffer];
 	}
 
 	void GraphicsProgram::UpdateAmbientLight(const GameTime& gameTime)
@@ -364,10 +401,23 @@ namespace Rendering
 			mShowShadowMapping = !mShowShadowMapping;
 		}
 
+		if (key == GLFW_KEY_RIGHT_CONTROL && action == GLFW_PRESS)
+		{
+			mDeferredEnabled = !mDeferredEnabled;
+		}
+
+		if (key == GLFW_KEY_RIGHT_ALT && action == GLFW_PRESS)
+		{
+			++mShownGBuffer;
+			if (mShownGBuffer >= 3) mShownGBuffer = 0;
+			gBufferSwitch[mShownGBuffer]();
+		}
+
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
 			++mControlledObject;
 			if (mControlledObject >= mControlledObjects.size()) mControlledObject = 0;
 		}
+
 	}
 }

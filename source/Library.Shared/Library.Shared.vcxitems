@@ -18,6 +18,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DebugTexture.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredEffect.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredFramebuffer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredLightingEffect.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredScreen.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DepthPass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectionalLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DrawableGameComponent.cpp" />
@@ -86,6 +90,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugTexture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredEffect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredFramebuffer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredLightingEffect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredScreen.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DepthPass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectionalLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DrawableGameComponent.h" />
@@ -143,6 +151,10 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\2DTextureDepth.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\BasicEffect.frag" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\BasicEffect.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\Deferred.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\Deferred.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\DeferredLighting.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\DeferredLighting.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\DepthPass.frag" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\DepthPass.vert" />
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\Skybox.frag" />

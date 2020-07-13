@@ -196,6 +196,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLightShadowedEffect.cpp">
       <Filter>ShaderPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredFramebuffer.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredScreen.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredLightingEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeferredEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BasicEffect.h">
@@ -355,6 +367,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLightShadowedEffect.h">
       <Filter>ShaderPrograms</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredFramebuffer.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredScreen.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredLightingEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeferredEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Enum.inl">
@@ -418,6 +442,18 @@
       <Filter>Content\Effects</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Content\Effects\SpotlightShadowed.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\Deferred.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\Deferred.vert">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\DeferredLighting.frag">
+      <Filter>Content\Effects</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Content\Effects\DeferredLighting.vert">
       <Filter>Content\Effects</Filter>
     </None>
   </ItemGroup>

@@ -7,7 +7,7 @@
 namespace Library
 {
 
-	class ScreenRect final : public DrawableGameComponent, public Rectangle
+	class ScreenRect : public DrawableGameComponent, public Rectangle
 	{
 		RTTI_DECLARATIONS(ScreenRect, DrawableGameComponent)
 
@@ -30,7 +30,7 @@ namespace Library
 
 		const glm::mat4& ScreenspaceTransform();
 
-	private:
+	protected:
 		glm::mat4 mScreenspaceTransform{ 1 };
 		glm::vec2 mPosition{ 0,0 };
 		glm::vec2 mDimensions{ 1,1 };

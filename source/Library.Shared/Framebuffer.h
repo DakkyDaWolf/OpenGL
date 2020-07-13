@@ -38,7 +38,7 @@ namespace Library
 		static std::shared_ptr<Framebuffer> CreateFramebuffer(GLuint width, GLuint height);
 		static std::shared_ptr<Framebuffer> CreateFramebuffer(std::shared_ptr<Texture2D> targetTexture);
 
-	private:
+	protected:
 
 		GLuint mFramebufferID{ 0 };
 		std::shared_ptr<Texture2D> mAssociatedTexture;

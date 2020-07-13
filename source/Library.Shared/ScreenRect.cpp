@@ -34,7 +34,7 @@ namespace Library
 
 		vector<ShaderDefinition> shaders;
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/2DTexture.vert"));
-		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/2DTextureDepth.frag"));
+		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/2DTexture.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
 

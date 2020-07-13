@@ -82,6 +82,12 @@ namespace Library
 			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightShadowed.frag"));
 			mShaderProgramShadowed.BuildProgram(shaders);
 		}
+		{
+			vector<ShaderDefinition> shaders;
+			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/Deferred.vert"));
+			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/Deferred.frag"));
+			mDeferredProgram.BuildProgram(shaders);
+		}
 
 		// Load the model
 		Model model(mObjectFilename, true);
@@ -99,6 +105,7 @@ namespace Library
 		mShaderProgram.Initialize(mVertexArrayObject);
 		mShaderProgramDepth.Initialize(mVertexArrayObject);
 		mShaderProgramShadowed.Initialize(mVertexArrayObject);
+		mDeferredProgram.Initialize(mVertexArrayObject);
 		glBindVertexArray(0);
 
 		mWorldMatrix = mat4(1);
@@ -126,6 +133,7 @@ namespace Library
 		mShaderProgram.CameraPosition() << mCamera->Position();
 		mShaderProgram.SpecularColor() << mSpecularColor;
 		mShaderProgram.SpecularPower() << mSpecularPower;
+
 		mShaderProgram.FogColor() << mFogColor;
 		mShaderProgram.FogStart() << mFogStart;
 		mShaderProgram.FogRange() << mFogRange;
@@ -195,6 +203,34 @@ namespace Library
 		glBindVertexArray(0);
 	}
 
+	void RenderedMesh::DrawToGBuffer(const Library::GameTime& gameTime)
+	{
+		if (!mDeferredBuffer) return Draw(gameTime);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, mDeferredBuffer->BufferID());
+
+		glBindVertexArray(mVertexArrayObject);
+		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
+
+		mDeferredProgram.Use();
+
+		mat4 wvp = mCamera->ViewProjectionMatrix() * Transform() * mWorldMatrix;
+		mDeferredProgram.WorldViewProjection() << wvp;
+		mDeferredProgram.World() << Transform() * mWorldMatrix;
+
+		mDeferredProgram.SpecularPower() << mSpecularPower;
+
+		glBindSampler(0, mTrilinearSampler);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mColorTextureID);
+
+		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
 	void RenderedMesh::DepthTest(ProjectingLight& lightSource)
 	{
 		mShaderProgramDepth.Use();
@@ -214,6 +250,11 @@ namespace Library
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, DrawableGameComponent::mGame->ScreenWidth(), DrawableGameComponent::mGame->ScreenHeight());
+	}
+
+	void RenderedMesh::SetGBuffer(DeferredFramebuffer& gbuffer)
+	{
+		mDeferredBuffer = &gbuffer;
 	}
 
 	void RenderedMesh::SetAlbedo(glm::vec4 newColor)

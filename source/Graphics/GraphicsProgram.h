@@ -10,6 +10,8 @@
 #include "TextureProjector.h"
 #include "RenderedMesh.h"
 #include "ProjectingLight.h"
+#include "DeferredScreen.h"
+#include "DeferredFramebuffer.h"
 #include "Game.h"
 #include "ScreenRect.h"
 
@@ -44,6 +46,8 @@ namespace Rendering
 		std::shared_ptr<Library::MovableGameObject> ControlledObject();
 
 		bool ShowingShadowMapping() const;
+		std::string DeferredRenderingStatus() const;
+		std::string DeferredDebugDisplayed() const;
 
 	private:
 		void UpdateAmbientLight(const Library::GameTime& gameTime);
@@ -67,16 +71,34 @@ namespace Rendering
 		std::shared_ptr<Library::RenderedMesh> mCan;
 		std::shared_ptr<Library::RenderedMesh> mFlashlight;
 		std::shared_ptr<Library::ScreenRect> mDebugRect;
+		std::shared_ptr<Library::ScreenRect> mDeferredDebugRect;
+		std::shared_ptr<Library::DeferredScreen> mDeferredDisplay;
+
+		std::shared_ptr<Library::DeferredFramebuffer> mGBuffer;
+
+		const std::vector<std::function<void()>> gBufferSwitch = {
+			[this]() { mDeferredDebugRect->SetTexture(mGBuffer->PositionID()); },
+			[this]() { mDeferredDebugRect->SetTexture(mGBuffer->NormalID()); },
+			[this]() { mDeferredDebugRect->SetTexture(mGBuffer->ColorID()); }
+		};
+
+		const std::vector<std::string> gBufferDataNames = {
+			"Position",
+			"Normals",
+			"Color"
+		};
 
 		std::vector<std::shared_ptr<Library::RenderedMesh>> mMeshes;
 		std::vector<std::shared_ptr<Library::MovableGameObject>> mControlledObjects;
 		size_t mControlledObject = 0;
 		float ItemRotationRate = glm::two_pi<float>();
-		float ItemMovementRate = 5.f;
+		float ItemMovementRate = 15.f;
 
 		float mDepthBias = 0.001f;
 
 		Library::Game::KeyboardHandler mKeyboardHandler;
 		bool mShowShadowMapping = false;
+		bool mDeferredEnabled = false;
+		int mShownGBuffer = 0;
 	};
 }
