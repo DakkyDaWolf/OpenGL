@@ -25,12 +25,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="GraphicsGame.cpp" />
     <ClCompile Include="GraphicsProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
     <ClInclude Include="GraphicsGame.h" />
     <ClInclude Include="GraphicsProgram.h" />
   </ItemGroup>
@@ -74,14 +72,6 @@
     <CopyFileToFolders Include="Content\Models\DirectionalLightProxy.obj">
       <Filter>Content\Models</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Content\Effects\ShadowMappingPS.hlsl">
-      <Filter>Content\Effects</Filter>
-    </FxCompile>
-    <FxCompile Include="Content\Effects\ShadowMappingVS.hlsl">
-      <Filter>Content\Effects</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Effects\FlatTexture.frag">

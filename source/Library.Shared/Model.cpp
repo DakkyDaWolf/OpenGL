@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Model.h"
 #include "ModelMaterial.h"
+#include <exception>
 
 using namespace std;
 

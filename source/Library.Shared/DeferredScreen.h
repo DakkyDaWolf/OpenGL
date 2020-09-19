@@ -1,5 +1,5 @@
 #pragma once
-#include "ScreenRect.h"
+#include "DrawableGameComponent.h"
 #include "DeferredFramebuffer.h"
 #include "ProjectingLight.h"
 #include "Light.h"
@@ -10,9 +10,9 @@
 namespace Library
 {
 
-	class DeferredScreen final : public ScreenRect
+	class DeferredScreen final : public DrawableGameComponent
 	{
-		RTTI_DECLARATIONS(DeferredScreen, ScreenRect)
+		RTTI_DECLARATIONS(DeferredScreen, DrawableGameComponent)
 
 	public:
 		DeferredScreen(Game& game, std::shared_ptr<Camera>& camera, std::shared_ptr<DeferredFramebuffer>& fbo, std::shared_ptr<ProjectingLight>& light);
@@ -26,16 +26,12 @@ namespace Library
 		virtual void Draw(const GameTime & gameTime) override;
 		void SetAmbientLight(std::shared_ptr<Light>& light);
 
-		void SetTexture(GLuint textureID) = delete;
-		void SetPosition(const glm::vec2 & position) = delete;
-		void SetDimensions(const glm::vec2 & dimensions) = delete;
-
 	private:
-		glm::mat4 mScreenspaceTransform{ 1 };
-		glm::vec2 mPosition{ 0,0 };
-		glm::vec2 mDimensions{ 1,1 };
-		bool mScreenspaceTransformDirty = true;
-		bool mInverseTextureY = false;
+		GLuint mTextureSampler{ 0 };
+		GLuint mRectVAO{ 0 };
+		GLuint mRectVertexBuffer{ 0 };
+		GLuint mIndexCount{ 0 };
+		GLuint mIndexBuffer{ 0 };
 
 		std::shared_ptr<DeferredFramebuffer> mFramebuffer;
 		std::shared_ptr<ProjectingLight> mLight;
@@ -43,8 +39,8 @@ namespace Library
 		std::shared_ptr<Light> mAmbientLight;
 		DeferredLightingEffect mDeferredShader;
 
-		float mFogStart = 80.0f;
-		float mFogRange = 100.0f;
+		float mFogStart = 150.0f;
+		float mFogRange = 500.0f;
 		glm::vec4 mFogColor = Library::ColorHelper::CornflowerBlue;
 	};
 

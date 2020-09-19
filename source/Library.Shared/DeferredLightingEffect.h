@@ -9,7 +9,6 @@ namespace Library
 	{
 		RTTI_DECLARATIONS(DeferredLightingEffect, ShaderProgram)
 
-		SHADER_VARIABLE_DECLARATION(ScreenspaceProjection)
 		SHADER_VARIABLE_DECLARATION(AmbientColor)
 		SHADER_VARIABLE_DECLARATION(LightPosition)
 		SHADER_VARIABLE_DECLARATION(LightColor)

@@ -35,6 +35,31 @@ namespace Library
         return mMovementRate;
     }
 
+	void FirstPersonCamera::LockCamera()
+	{
+		cameraControlLock = true;
+	}
+
+	void FirstPersonCamera::UnlockCamera()
+	{
+		cameraControlLock = false;
+	}
+
+	void FirstPersonCamera::SetCameraLocked(bool locked)
+	{
+		cameraControlLock = locked;
+	}
+
+	bool FirstPersonCamera::CameraLocked() const
+	{
+		return cameraControlLock;
+	}
+
+	void FirstPersonCamera::SetMouseInputConstant(bool constantInput)
+	{
+		mouseInputConstant = constantInput;
+	}
+
     void FirstPersonCamera::Initialize()
     {
         PerspectiveCamera::Initialize();
@@ -80,7 +105,7 @@ namespace Library
 		double x, y;
 		glfwGetCursorPos(mGame->Window(), &x, &y);		
 
-		if (glfwGetMouseButton(mGame->Window(), GLFW_MOUSE_BUTTON_LEFT))
+		if (!cameraControlLock && (glfwGetMouseButton(mGame->Window(), GLFW_MOUSE_BUTTON_LEFT) || mouseInputConstant))
 		{
 			rotationAmount.x = static_cast<float>(mLastCursorX - x) * mMouseSensitivity;
 			rotationAmount.y = static_cast<float>(mLastCursorY - y) * mMouseSensitivity;

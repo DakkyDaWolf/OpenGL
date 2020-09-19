@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Mesh.h"
 #include "Model.h"
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 using namespace glm;

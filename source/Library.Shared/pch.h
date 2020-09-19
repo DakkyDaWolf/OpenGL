@@ -42,14 +42,16 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #if defined(_LINUX)
 #pragma GCC diagnostic pop
 #endif
 
-#include <SOIL/SOIL.h>
+//#include <SOIL/SOIL.h>
 
 // Assimp
 #if defined(_LINUX)

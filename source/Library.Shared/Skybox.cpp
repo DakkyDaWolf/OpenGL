@@ -3,6 +3,7 @@
 #include "Utility.h"
 #include "Model.h"
 #include "Camera.h"
+#include "TextureManager.h"
 
 using namespace glm;
 using namespace std;
@@ -12,7 +13,7 @@ namespace Library
 	RTTI_DEFINITIONS(Skybox)
 
 	Skybox::Skybox(Game& game, std::shared_ptr<Camera> camera, const string& posXFilename, const string& negXFilename, const string& posYFilename, const string& negYFilename, const string& posZFilename, const string& negZFilename, float scale) :
-		DrawableGameComponent(game, move(camera)),
+		DrawableGameComponent(game, camera),
 		mPosXFilename(posXFilename), mNegXFilename(negXFilename), mPosYFilename(posYFilename), mNegYFilename(negYFilename), mPosZFilename(posZFilename), mNegZFilename(negZFilename)
 	{
 		mScaleMatrix = glm::scale(mat4(1), vec3(scale));
@@ -43,7 +44,7 @@ namespace Library
 		mesh->CreateIndexBuffer(mIndexBuffer);
 		mIndexCount = mesh->Indices().size();
 	
-		mSkyboxTexture = SOIL_load_OGL_cubemap(mPosXFilename.c_str(), mNegXFilename.c_str(), mPosYFilename.c_str(), mNegYFilename.c_str(), mPosZFilename.c_str(), mNegZFilename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		mSkyboxTexture = TextureManager::RegisterCubemapTextures(mPosXFilename, mNegXFilename, mPosYFilename, mNegYFilename, mPosZFilename, mNegZFilename);
 		if (mSkyboxTexture == 0)
 		{
 			throw runtime_error("SOIL_load_OGL_cubemap() failed.");

@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "FlatTextureEffect.h"
-#include "Mesh.h"
-#include "ColorHelper.h"
 #include "VertexDeclarations.h"
 
 using namespace glm;

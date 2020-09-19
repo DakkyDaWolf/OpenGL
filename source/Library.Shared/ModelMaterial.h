@@ -1,6 +1,8 @@
 #pragma once
 
 struct aiMaterial;
+#include <vector>
+#include <map>
 
 namespace Library
 {

@@ -9,6 +9,8 @@
 #include "SpotLight.h"
 #include "ProjectingLight.h"
 #include <glm/gtx/transform.hpp>
+#include "TextureManager.h"
+#include "ModelManager.h"
 
 using namespace glm;
 using namespace std;
@@ -38,7 +40,7 @@ namespace Library
 		//load texture if specified
 		if (!mTextureFilename.empty())
 		{
-			mColorTextureID = SOIL_load_OGL_texture(mTextureFilename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+			mColorTextureID = TextureManager::RegisterTexture(mTextureFilename);
 			if (mColorTextureID == 0)
 			{
 				throw std::runtime_error("SOIL_load_OGL_texture() failed.");
@@ -48,67 +50,73 @@ namespace Library
 			mTextured = true;
 		}
 
-		// Create the trilinear texture sampler
-		glGenSamplers(1, &mTrilinearSampler);
-		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		if (!ProgramsInitialized)
+		{
+			mShaderProgram = new SpotLightEffect();
+			mShaderProgramShadowed = new SpotLightShadowedEffect();
+			mShaderProgramDepth = new DepthPass();
+			mDeferredProgram = new DeferredEffect();
 
-		glGenSamplers(1, &mShadowSampler);
-		//glSamplerParameteri(mShadowSampler, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-		//glSamplerParameteri(mShadowSampler, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-		glSamplerParameteri(mShadowSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glSamplerParameteri(mShadowSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glSamplerParameteri(mShadowSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glSamplerParameteri(mShadowSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			// Create the trilinear texture sampler
+			glGenSamplers(1, &mTrilinearSampler);
+			glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glSamplerParameteri(mTrilinearSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		// Build the shader programs
-		{
-			vector<ShaderDefinition> shaders;
-			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotlightBasic.vert"));
-			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightBasic.frag"));
-			mShaderProgram.BuildProgram(shaders);
-		}
-		{
-			vector<ShaderDefinition> shaders;
-			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/DepthPass.vert"));
-			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/DepthPass.frag"));
-			mShaderProgramDepth.BuildProgram(shaders);
-		}
-		{
-			vector<ShaderDefinition> shaders;
-			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotlightShadowed.vert"));
-			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightShadowed.frag"));
-			mShaderProgramShadowed.BuildProgram(shaders);
-		}
-		{
-			vector<ShaderDefinition> shaders;
-			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/Deferred.vert"));
-			shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/Deferred.frag"));
-			mDeferredProgram.BuildProgram(shaders);
-		}
+			glGenSamplers(1, &mShadowSampler);
+			//glSamplerParameteri(mShadowSampler, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+			//glSamplerParameteri(mShadowSampler, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+			glSamplerParameteri(mShadowSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glSamplerParameteri(mShadowSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glSamplerParameteri(mShadowSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glSamplerParameteri(mShadowSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+			// Build the shader programs
+			{
+				vector<ShaderDefinition> shaders;
+				shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotlightBasic.vert"));
+				shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightBasic.frag"));
+				mShaderProgram->BuildProgram(shaders);
+			}
+			{
+				vector<ShaderDefinition> shaders;
+				shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/DepthPass.vert"));
+				shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/DepthPass.frag"));
+				mShaderProgramDepth->BuildProgram(shaders);
+			}
+			{
+				vector<ShaderDefinition> shaders;
+				shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/SpotlightShadowed.vert"));
+				shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/SpotlightShadowed.frag"));
+				mShaderProgramShadowed->BuildProgram(shaders);
+			}
+			{
+				vector<ShaderDefinition> shaders;
+				shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Effects/Deferred.vert"));
+				shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Effects/Deferred.frag"));
+				mDeferredProgram->BuildProgram(shaders);
+			}
+
+			ProgramsInitialized = true;
+		}		
 
 		// Load the model
-		Model model(mObjectFilename, true);
+		auto& loadedMesh = ModelManager::GetMesh(mObjectFilename, mMeshIndex);
 
 		// Create the vertex and index buffers
-		auto mesh = model.Meshes().at(mMeshIndex);
+		VertexPositionTextureNormal::CreateVertexBuffer(loadedMesh.GetMesh(), mVertexBuffer);
 
-		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVertexBuffer);
-		mesh->CreateIndexBuffer(mIndexBuffer);
-
-		mIndexCount = mesh->Indices().size();
+		mIndexBuffer = loadedMesh.IndexBuffer();
+		mIndexCount = loadedMesh.IndexCount();
 
 		// Create the vertex array objects
 		glGenVertexArrays(1, &mVertexArrayObject);
-		mShaderProgram.Initialize(mVertexArrayObject);
-		mShaderProgramDepth.Initialize(mVertexArrayObject);
-		mShaderProgramShadowed.Initialize(mVertexArrayObject);
-		mDeferredProgram.Initialize(mVertexArrayObject);
+		mDeferredProgram->Initialize(mVertexArrayObject);
+		mShaderProgram->Initialize(mVertexArrayObject);
+		mShaderProgramDepth->Initialize(mVertexArrayObject);
+		mShaderProgramShadowed->Initialize(mVertexArrayObject);
 		glBindVertexArray(0);
-
-		mWorldMatrix = mat4(1);
 
 		Reset();
 	}
@@ -124,31 +132,31 @@ namespace Library
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 
-		mShaderProgram.Use();
+		mShaderProgram->Use();
 
 		mat4 wvp = mCamera->ViewProjectionMatrix() * Transform() * mWorldMatrix;
-		mShaderProgram.WorldViewProjection() << wvp;
-		mShaderProgram.World() << Transform() * mWorldMatrix;
+		mShaderProgram->WorldViewProjection() << wvp;
+		mShaderProgram->World() << Transform() * mWorldMatrix;
 
-		mShaderProgram.CameraPosition() << mCamera->Position();
-		mShaderProgram.SpecularColor() << mSpecularColor;
-		mShaderProgram.SpecularPower() << mSpecularPower;
+		mShaderProgram->CameraPosition() << mCamera->Position();
+		mShaderProgram->SpecularColor() << mSpecularColor;
+		mShaderProgram->SpecularPower() << mSpecularPower;
 
-		mShaderProgram.FogColor() << mFogColor;
-		mShaderProgram.FogStart() << mFogStart;
-		mShaderProgram.FogRange() << mFogRange;
+		mShaderProgram->FogColor() << mFogColor;
+		mShaderProgram->FogStart() << mFogStart;
+		mShaderProgram->FogRange() << mFogRange;
 
-		mShaderProgram.AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : vec4(vec3(mAmbientIntensity), 1));
+		mShaderProgram->AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : vec4(vec3(mAmbientIntensity), 1));
 
-		mShaderProgram.LightColor() << (mSpotlight ? mSpotlight->Color() : glm::vec4(0));
-		mShaderProgram.LightLookDirection() << (mSpotlight ? mSpotlight->Forward() : glm::vec3(1, 0, 0));
-		mShaderProgram.LightPosition() << (mSpotlight ? mSpotlight->Position() : glm::vec3(0));
-		mShaderProgram.LightFalloffRange() << (mSpotlight ? mSpotlight->AttenuationRadius() : 1.f);
-		mShaderProgram.LightInnerAngle() << (mSpotlight ? mSpotlight->InnerAngle() : 0.25f);
-		mShaderProgram.LightOuterAngle() << (mSpotlight ? mSpotlight->OuterAngle() : 0.3f);
+		mShaderProgram->LightColor() << (mSpotlight ? mSpotlight->Color() : glm::vec4(0));
+		mShaderProgram->LightLookDirection() << (mSpotlight ? mSpotlight->Forward() : glm::vec3(1, 0, 0));
+		mShaderProgram->LightPosition() << (mSpotlight ? mSpotlight->Position() : glm::vec3(0));
+		mShaderProgram->LightFalloffRange() << (mSpotlight ? mSpotlight->AttenuationRadius() : 1.f);
+		mShaderProgram->LightInnerAngle() << (mSpotlight ? mSpotlight->InnerAngle() : 0.25f);
+		mShaderProgram->LightOuterAngle() << (mSpotlight ? mSpotlight->OuterAngle() : 0.3f);
 		//mShaderProgram.EmissiveIntensity() << mEmissiveIntensity();
 
-		mShaderProgram.Albedo() << mAlbedo;
+		mShaderProgram->Albedo() << mAlbedo;
 
 		glBindSampler(0, mTrilinearSampler);
 		glActiveTexture(GL_TEXTURE0);
@@ -164,32 +172,32 @@ namespace Library
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 
-		mShaderProgramShadowed.Use();
+		mShaderProgramShadowed->Use();
 
 		mat4 wvp = mCamera->ViewProjectionMatrix() * Transform() * mWorldMatrix;
-		mShaderProgramShadowed.WorldViewProjection() << wvp;
-		mShaderProgramShadowed.World() << Transform() * mWorldMatrix;
+		mShaderProgramShadowed->WorldViewProjection() << wvp;
+		mShaderProgramShadowed->World() << Transform() * mWorldMatrix;
 
-		mShaderProgramShadowed.CameraPosition() << mCamera->Position();
-		mShaderProgramShadowed.SpecularColor() << mSpecularColor;
-		mShaderProgramShadowed.SpecularPower() << mSpecularPower;
+		mShaderProgramShadowed->CameraPosition() << mCamera->Position();
+		mShaderProgramShadowed->SpecularColor() << mSpecularColor;
+		mShaderProgramShadowed->SpecularPower() << mSpecularPower;
 
-		mShaderProgramShadowed.FogColor() << mFogColor;
-		mShaderProgramShadowed.FogStart() << mFogStart;
-		mShaderProgramShadowed.FogRange() << mFogRange;
+		mShaderProgramShadowed->FogColor() << mFogColor;
+		mShaderProgramShadowed->FogStart() << mFogStart;
+		mShaderProgramShadowed->FogRange() << mFogRange;
 
-		mShaderProgramShadowed.AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : glm::vec4(1));
+		mShaderProgramShadowed->AmbientColor() << (mAmbientLight ? mAmbientLight->Color() : glm::vec4(1));
 
-		mShaderProgramShadowed.LightColor() << (mSpotlight ? mSpotlight->Color() : glm::vec4(0));
-		mShaderProgramShadowed.LightLookDirection() << (mSpotlight ? mSpotlight->Forward() : glm::vec3(1, 0, 0));
-		mShaderProgramShadowed.LightPosition() << (mSpotlight ? mSpotlight->Position() : glm::vec3(0));
-		mShaderProgramShadowed.LightFalloffRange() << (mSpotlight ? mSpotlight->AttenuationRadius() : 1.f);
-		mShaderProgramShadowed.LightInnerAngle() << (mSpotlight ? mSpotlight->InnerAngle() : 0.25f);
-		mShaderProgramShadowed.LightOuterAngle() << (mSpotlight ? mSpotlight->OuterAngle() : 0.3f);
-		mShaderProgramShadowed.LightWVP() << (mSpotlight ? mSpotlight->ViewProjectionMatrix() : mat4(1));
-		mShaderProgramShadowed.ShadowDepthTolerance() << mShadowDepthBias;
+		mShaderProgramShadowed->LightColor() << (mSpotlight ? mSpotlight->Color() : glm::vec4(0));
+		mShaderProgramShadowed->LightLookDirection() << (mSpotlight ? -mSpotlight->Forward() : glm::vec3(1, 0, 0));
+		mShaderProgramShadowed->LightPosition() << (mSpotlight ? mSpotlight->Position() : glm::vec3(0));
+		mShaderProgramShadowed->LightFalloffRange() << (mSpotlight ? mSpotlight->AttenuationRadius() : 1.f);
+		mShaderProgramShadowed->LightInnerAngle() << (mSpotlight ? mSpotlight->InnerAngle() : 0.25f);
+		mShaderProgramShadowed->LightOuterAngle() << (mSpotlight ? mSpotlight->OuterAngle() : 0.3f);
+		mShaderProgramShadowed->LightWVP() << (mSpotlight ? mSpotlight->ViewProjectionMatrix() : mat4(1));
+		mShaderProgramShadowed->ShadowDepthTolerance() << mShadowDepthBias;
 
-		mShaderProgramShadowed.Albedo() << mAlbedo;
+		mShaderProgramShadowed->Albedo() << mAlbedo;
 
 		glBindSampler(0, mTrilinearSampler);
 		glActiveTexture(GL_TEXTURE0);
@@ -208,18 +216,18 @@ namespace Library
 		if (!mDeferredBuffer) return Draw(gameTime);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, mDeferredBuffer->BufferID());
-
+		
 		glBindVertexArray(mVertexArrayObject);
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 
-		mDeferredProgram.Use();
+		mDeferredProgram->Use();
 
 		mat4 wvp = mCamera->ViewProjectionMatrix() * Transform() * mWorldMatrix;
-		mDeferredProgram.WorldViewProjection() << wvp;
-		mDeferredProgram.World() << Transform() * mWorldMatrix;
+		mDeferredProgram->WorldViewProjection() << wvp;
+		mDeferredProgram->World() << Transform() * mWorldMatrix;
 
-		mDeferredProgram.SpecularPower() << mSpecularPower;
+		mDeferredProgram->SpecularPower() << mSpecularPower;
 
 		glBindSampler(0, mTrilinearSampler);
 		glActiveTexture(GL_TEXTURE0);
@@ -233,13 +241,13 @@ namespace Library
 
 	void RenderedMesh::DepthTest(ProjectingLight& lightSource)
 	{
-		mShaderProgramDepth.Use();
+		mShaderProgramDepth->Use();
 
 		glViewport(0, 0, lightSource.DepthMapWidth(), lightSource.DepthMapHeight());
 		glBindFramebuffer(GL_FRAMEBUFFER, lightSource.FrameBuffer());
 
 		mat4 wvp = lightSource.ViewProjectionMatrix() * Transform() * mWorldMatrix;
-		mShaderProgramDepth.WorldViewProjection() << wvp;
+		mShaderProgramDepth->WorldViewProjection() << wvp;
 
 		glBindVertexArray(mVertexArrayObject);
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);

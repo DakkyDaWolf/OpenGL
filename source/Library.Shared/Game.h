@@ -49,13 +49,15 @@ namespace Library
 		void AddKeyboardHandler(KeyboardHandler handler);
 		void RemoveKeyboardHandler(KeyboardHandler handler);
 
+		GameTime& Time() { return mGameTime; }
+
 	protected:
 		virtual void InitializeWindow();
 		virtual void InitializeOpenGL();
 		virtual void Shutdown();
 
-		inline static const std::uint32_t DefaultScreenWidth = 800;
-		inline static const std::uint32_t DefaultScreenHeight = 600;
+		inline static const std::uint32_t DefaultScreenWidth = 1920;
+		inline static const std::uint32_t DefaultScreenHeight = 1080;
 
 		std::string mWindowTitle;		
 		GLFWwindow* mWindow = nullptr;

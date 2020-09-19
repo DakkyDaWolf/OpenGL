@@ -49,9 +49,9 @@ namespace Library
 		void SetAmbientLight(std::shared_ptr<Light> newLight);
 		void SetSpotLight(std::shared_ptr<ProjectingLight> newLight);
 
-		float mSpecularPower = 25.0f;
-		float mFogStart = 80.0f;
-		float mFogRange = 100.0f;
+		float mSpecularPower = 1.0f;
+		float mFogStart = 500.0f;
+		float mFogRange = 1000.0f;
 		float mAmbientIntensity = 0.5f;
 
 	private:
@@ -64,13 +64,8 @@ namespace Library
 		std::shared_ptr<Light> mAmbientLight;
 		std::shared_ptr<ProjectingLight> mSpotlight;
 
-		glm::mat4 mWorldMatrix{ 1 };
+		glm::mat4 mWorldMatrix{glm::mat4(1)};
 		glm::vec4 mSpecularColor = Library::ColorHelper::White;
-		
-		SpotLightEffect mShaderProgram;
-		SpotLightShadowedEffect mShaderProgramShadowed;
-		DepthPass mShaderProgramDepth;
-		DeferredEffect mDeferredProgram;
 
 		DeferredFramebuffer* mDeferredBuffer{ nullptr };
 
@@ -87,8 +82,17 @@ namespace Library
 		bool mTextured = false;
 
 		GLuint mNormalMap = 0;
-		GLuint mTrilinearSampler = 0;
-		GLuint mShadowSampler = 0;
+
+		//global values that won't change between models can all be initialized once
+		inline static bool ProgramsInitialized{ false };
+
+		inline static GLuint mTrilinearSampler{ 0 };
+		inline static GLuint mShadowSampler{ 0 };
+
+		inline static SpotLightEffect* mShaderProgram{ nullptr };
+		inline static SpotLightShadowedEffect* mShaderProgramShadowed{ nullptr };
+		inline static DepthPass* mShaderProgramDepth{ nullptr };
+		inline static DeferredEffect* mDeferredProgram{ nullptr };
 
 	};
 

@@ -14,6 +14,11 @@
 #include "DeferredFramebuffer.h"
 #include "Game.h"
 #include "ScreenRect.h"
+#include "Skybox.h"
+#include "ImGuiComponent.h"
+#include "Presentation.h"
+#include "DeferredAmbientLight.h"
+#include "DeferredPointLight.h"
 
 namespace Library
 {
@@ -61,6 +66,8 @@ namespace Rendering
 		inline static const glm::vec2 LightRotationRate{ glm::two_pi<float>(), glm::two_pi<float>() };
 		inline static const float LightModulationRate{ std::numeric_limits<unsigned char>::max() };
 
+		std::shared_ptr<Library::ImGuiComponent> mDebugTextWindow;
+		std::shared_ptr<Library::Skybox> mSkybox;
 		std::shared_ptr<Library::Light> mAmbientLight;
 		std::shared_ptr<Library::DirectionalLight> mDirectionalLight;
 		std::shared_ptr<Library::ProjectingLight> mSpotLight;
@@ -73,6 +80,10 @@ namespace Rendering
 		std::shared_ptr<Library::ScreenRect> mDebugRect;
 		std::shared_ptr<Library::ScreenRect> mDeferredDebugRect;
 		std::shared_ptr<Library::DeferredScreen> mDeferredDisplay;
+		std::shared_ptr<Library::Presentation> mPresentation;
+
+		std::shared_ptr<Library::DeferredAmbientLight> mDeferredAmbientLight;
+		std::vector<std::shared_ptr<Library::DeferredPointLight>> mPointLights;
 
 		std::shared_ptr<Library::DeferredFramebuffer> mGBuffer;
 
@@ -92,13 +103,17 @@ namespace Rendering
 		std::vector<std::shared_ptr<Library::MovableGameObject>> mControlledObjects;
 		size_t mControlledObject = 0;
 		float ItemRotationRate = glm::two_pi<float>();
-		float ItemMovementRate = 15.f;
+		float ItemMovementRate = 50.f;
 
 		float mDepthBias = 0.001f;
 
 		Library::Game::KeyboardHandler mKeyboardHandler;
 		bool mShowShadowMapping = false;
-		bool mDeferredEnabled = false;
 		int mShownGBuffer = 0;
+
+		size_t tenPower = 0;
+		size_t currentPointLightCount = 1;
+
+		float mRadiusMultiplier = 3.1f;
 	};
 }

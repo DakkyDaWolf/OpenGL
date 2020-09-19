@@ -11,6 +11,7 @@ namespace Library
 
 	public:
 		Texture(const Texture&) = default;
+		Texture(const std::string& fileName);
 		Texture& operator=(const Texture&) = default;
 		Texture(Texture&&) = default;
 		Texture& operator=(Texture&&) = default;

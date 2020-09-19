@@ -1,0 +1,2 @@
+C:\dev\OpenGL\build\x64\Debug\AssetImporter.pdb
+C:\dev\OpenGL\source\AssetImporter\x64\Debug\AssetImporter.pdb

@@ -21,7 +21,13 @@ namespace Library
         float& RotationRate();
         float& MovementRate();
 
-        //virtual void ApplyRotation(const glm::mat4& transform) override;
+        void LockCamera();
+        void UnlockCamera();
+        void SetCameraLocked(bool locked);
+
+        bool CameraLocked() const;
+
+        void SetMouseInputConstant(bool constantInput = true);
         
         virtual void Initialize() override;
         virtual void Update(const GameTime& gameTime) override;
@@ -38,5 +44,7 @@ namespace Library
     private:
 		double mLastCursorX = 0.0;
 		double mLastCursorY = 0.0;
+        bool mouseInputConstant = true;
+        bool cameraControlLock = false;
     };
 }

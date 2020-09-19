@@ -11,7 +11,7 @@ namespace Library
 	RTTI_DEFINITIONS(DeferredLightingEffect)
 
 		DeferredLightingEffect::DeferredLightingEffect() :
-		SHADER_VARIABLE_INITIALIZATION(ScreenspaceProjection), SHADER_VARIABLE_INITIALIZATION(AmbientColor),
+		SHADER_VARIABLE_INITIALIZATION(AmbientColor),
 		SHADER_VARIABLE_INITIALIZATION(LightPosition), SHADER_VARIABLE_INITIALIZATION(LightLookDirection),
 		SHADER_VARIABLE_INITIALIZATION(LightFalloffRange), SHADER_VARIABLE_INITIALIZATION(CameraPosition),
 		SHADER_VARIABLE_INITIALIZATION(FogColor), SHADER_VARIABLE_INITIALIZATION(FogStart),
@@ -20,7 +20,6 @@ namespace Library
 	{
 	}
 
-	SHADER_VARIABLE_DEFINITION(DeferredLightingEffect, ScreenspaceProjection)
 	SHADER_VARIABLE_DEFINITION(DeferredLightingEffect, AmbientColor)
 	SHADER_VARIABLE_DEFINITION(DeferredLightingEffect, LightPosition)
 	SHADER_VARIABLE_DEFINITION(DeferredLightingEffect, LightLookDirection)
@@ -37,7 +36,6 @@ namespace Library
 	{
 		ShaderProgram::Initialize(vertexArrayObject);
 
-		SHADER_VARIABLE_INSTANTIATE(ScreenspaceProjection)
 		SHADER_VARIABLE_INSTANTIATE(AmbientColor)
 		SHADER_VARIABLE_INSTANTIATE(LightPosition)
 		SHADER_VARIABLE_INSTANTIATE(LightColor)

@@ -6,6 +6,7 @@
 #include "VertexDeclarations.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "TextureManager.h"
 
 using namespace std;
 using namespace glm;
@@ -25,7 +26,7 @@ namespace Library
 	{
 		if (!mTextureFilename.empty())
 		{
-			mTextureID = SOIL_load_OGL_texture(mTextureFilename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+			mTextureID = TextureManager::RegisterTexture(mTextureFilename);
 			if (mTextureID == 0)
 			{
 				throw std::runtime_error("SOIL_load_OGL_texture() failed.");
@@ -88,7 +89,7 @@ namespace Library
 			0, 3, 2
 		};
 
-		mIndexCount = std::size(indices);
+		mIndexCount = GLuint(std::size(indices));
 
 		glGenBuffers(1, &mIndexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
@@ -103,6 +104,7 @@ namespace Library
 
 	void ScreenRect::Draw(const GameTime& /*gameTime*/)
 	{
+		glDisable(GL_DEPTH_TEST);
 		glViewport(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight());
 		glBindVertexArray(mRectVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, mRectVertexBuffer);
@@ -116,13 +118,9 @@ namespace Library
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
 
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LEQUAL);
-
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	void ScreenRect::SetTexture(GLuint textureID)

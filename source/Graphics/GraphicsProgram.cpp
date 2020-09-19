@@ -7,7 +7,11 @@
 #include "ProjectingLight.h"
 #include "Camera.h"
 #include "ProxyModel.h"
+#include "Game.h"
 #include "glm/gtx/transform.hpp"
+#include "ModelManager.h"
+#include "TextureManager.h"
+#include "FirstPersonCamera.h"
 
 using namespace glm;
 using namespace std;
@@ -29,6 +33,59 @@ namespace Rendering
 
 	void GraphicsProgram::Initialize()
 	{
+		glfwSetInputMode(mGame->Window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		mCamera->As<FirstPersonCamera>()->UnlockCamera();
+
+		mSkybox = make_shared<Skybox>(*mGame, mCamera,
+			"Content/Textures/Maskonaive2_1024/posx.jpg",
+			"Content/Textures/Maskonaive2_1024/negx.jpg",
+			"Content/Textures/Maskonaive2_1024/posy.jpg",
+			"Content/Textures/Maskonaive2_1024/negy.jpg",
+			"Content/Textures/Maskonaive2_1024/posz.jpg",
+			"Content/Textures/Maskonaive2_1024/negz.jpg", 1000.0f);
+		mSkybox->Initialize();
+
+		mDebugTextWindow = make_shared<ImGuiComponent>(*mGame);
+		//mComponents.push_back(mDebugTextWindow);
+		//mServices.AddService(ImGuiComponent::TypeIdClass(), mDebugTextWindow.get());
+		mDebugTextWindow->Initialize();
+
+		auto helpTextImGuiRenderBlock = make_shared<ImGuiComponent::RenderBlock>([&]()
+			{
+				ImGui::Begin("Controls");
+				ImGui::SetNextWindowPos(ImVec2(100, 200));
+				ImGui::SetNextWindowSize(ImVec2(200, 200));
+
+				{
+					stringstream fpsLabel;
+					fpsLabel << setprecision(3) << "Frame Rate: " << (mGame->Time().ElapsedGameTime().count() ? 1000.f / mGame->Time().ElapsedGameTime().count() : 0.f) << "    Total Elapsed Time: " << mGame->Time().TotalGameTimeSeconds().count();
+					ImGui::Text(fpsLabel.str().c_str());
+				}
+
+				ImGui::Text("Camera (WASD , QE , Mouse-Look)");
+				AddImGuiTextField("Camera Movement Rate (-U/+I): "s, mCamera->As<FirstPersonCamera>()->MovementRate());
+
+				ImGui::Text("Rotate Controlled Object (Arrow Keys)");
+				ImGui::Text("Move Controlled Object (Shift + Arrow Keys , Page Up/Down)");
+				AddImGuiTextField("Object Movement Rate (-O/+P): "s, ItemMovementRate);
+				AddImGuiTextField("Controlled Object (Tab): "s, this->ControlledObject() ? this->ControlledObject()->Name() : "none");
+
+				AddImGuiTextField("Mouse status (Space): "s, mCamera->As<FirstPersonCamera>()->CameraLocked() ? "enabled" : "disabled");
+
+				AddImGuiTextField("Ambient Light Intensity ( - / + ): "s, this->AmbientLightIntensity(), 2);
+
+				//AddImGuiTextField("ShadowMapping (Space): "s, (this->ShowingShadowMapping() ? "On" : "Off"));
+				//AddImGuiTextField("Light volume radius multiplier ( -T / +Y ): "s, mRadiusMultiplier, 2);
+
+				AddImGuiTextField("Debugged GBuffer (R-alt): "s, this->DeferredDebugDisplayed());
+				AddImGuiTextField("Current point light count (-J/+K): "s, currentPointLightCount);
+				AddImGuiTextField("Model Loads Called: "s, ModelManager::ModelsLoaded);
+				AddImGuiTextField("Texture Loads Called: "s, TextureManager::TexturesLoaded);
+
+				ImGui::End();
+			});
+		mDebugTextWindow->AddRenderBlock(helpTextImGuiRenderBlock);
+
 		mAmbientLight = make_shared<Light>(*mGame);
 		mAmbientLight->SetColor(ColorHelper::LightGray);
 
@@ -37,9 +94,9 @@ namespace Rendering
 		mSpotLight = make_shared<ProjectingLight>(*mGame);
 		mSpotLight->Initialize();
 		mSpotLight->SetPosition(0.0f, 10.0, 15.0f);
-		mSpotLight->SetAttenuationRadius(5000.f);
+		mSpotLight->SetAttenuationRadius(50.f);
 		mSpotLight->SetInnerAngle(.95f);
-		mSpotLight->SetOuterAngle(0.90f);
+		mSpotLight->SetOuterAngle(.85f);
 		mSpotLight->SetNearPlaneDistance(3.f);
 		mSpotLight->SetFarPlaneDistance(500.f);
 		mSpotLight->Rename("Spotlight");
@@ -63,8 +120,9 @@ namespace Rendering
 
 		mBuilding = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Building3.obj", "Content/Textures/Building.png");
 		mBuilding->Initialize();
-		mBuilding->SetPosition(20.f, 0, 0.f);
+		mBuilding->SetPosition(-15.f, 0, -22.5f);
 		mBuilding->ApplyScale(1.f);
+		mBuilding->ApplyRotation(glm::rotate(6.5f * pi<float>() / 8, vec3(0, 1, 0)));
 		mBuilding->SetAmbientLight(mAmbientLight);
 		mBuilding->SetSpotLight(mSpotLight);
 		mMeshes.push_back(mBuilding);
@@ -78,6 +136,32 @@ namespace Rendering
 		mBuildingB->SetSpotLight(mSpotLight);
 		mMeshes.push_back(mBuildingB);
 		mBuildingB->Rename("Short Building");
+
+		auto currentMesh = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Building.obj", "Content/Textures/Building.png");
+		currentMesh->Initialize();
+		currentMesh->SetPosition(0.f, -126.75f, 0.f);
+		currentMesh->ApplyScale(10.f);
+		currentMesh->SetAmbientLight(mAmbientLight);
+		currentMesh->SetSpotLight(mSpotLight);
+		mMeshes.push_back(currentMesh);
+
+		currentMesh = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Building.obj", "Content/Textures/Building.png");
+		currentMesh->Initialize();
+		currentMesh->SetPosition(5.f, 0.f, -35.f);
+		currentMesh->ApplyScale(1.f);
+		currentMesh->ApplyRotation(glm::rotate(5.f * pi<float>() / 8, vec3(0, 1, 0)));
+		currentMesh->SetAmbientLight(mAmbientLight);
+		currentMesh->SetSpotLight(mSpotLight);
+		mMeshes.push_back(currentMesh);
+
+		currentMesh = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Building3.obj", "Content/Textures/Building.png");
+		currentMesh->Initialize();
+		currentMesh->SetPosition(30.f, 0.f, -40.f);
+		currentMesh->ApplyScale(1.f);
+		currentMesh->ApplyRotation(glm::rotate(4.f * pi<float>() / 8, vec3(0, 1, 0)));
+		currentMesh->SetAmbientLight(mAmbientLight);
+		currentMesh->SetSpotLight(mSpotLight);
+		mMeshes.push_back(currentMesh);
 
 		mFlashlight = make_shared<RenderedMesh>(*mGame, mCamera, "Content/Models/Flashlight.obj");
 		mFlashlight->Initialize();
@@ -102,11 +186,41 @@ namespace Rendering
 		mDeferredDisplay->Initialize();
 		mDeferredDisplay->SetAmbientLight(mAmbientLight);
 
+		mDeferredAmbientLight = make_shared<DeferredAmbientLight>(*mGame, mGBuffer);
+		mDeferredAmbientLight->Initialize();
+
+		srand(uint(time(0)));
+
+		for (int k = 0; k < 10; ++k)
+		{
+			for (int j = 0; j < 10; ++j)
+			{
+				for (int i = 0; i < 10; ++i)
+				{
+					auto thisLight = make_shared<DeferredPointLight>(*mGame, mCamera);
+					thisLight->Initialize();
+					thisLight->SetIntensity(0.5f);
+					vec4 color((rand() % 255) / 255.f, (rand() % 255) / 255.f, (rand() % 255) / 255.f, 1.f);
+					thisLight->SetPosition(vec3(-100.f + (20.f * i), 10.f - (15.f * k), -50.f + (20.f * j)));
+					thisLight->SetRadius(20.f);
+					thisLight->SetColor(color);
+					mPointLights.emplace_back(thisLight);
+				}
+			}
+		}
+		
+		DeferredPointLight::SetGBuffer(mGBuffer);
+
 		mDeferredDebugRect = make_shared<ScreenRect>(*mGame);
 		mDeferredDebugRect->Initialize(true);
 		mDeferredDebugRect->SetDimensions(vec2(240.f, 180.f));
 		mDeferredDebugRect->SetPosition(vec2(510.f, 50.f));
 		mDeferredDebugRect->SetTexture(mGBuffer->PositionID());
+
+		mPresentation = make_shared<Presentation>(*mGame);
+		mPresentation->Initialize();
+		mPresentation->AddSlide("Content/Textures/InfoSlides/info0.jpg");
+		mPresentation->AddSlide("Content/Textures/InfoSlides/info1.jpg");
 
 		for (auto& mesh : mMeshes)
 		{
@@ -128,10 +242,10 @@ namespace Rendering
 	void GraphicsProgram::Update(const GameTime& gameTime)
 	{
 		UpdateAmbientLight(gameTime);
-		UpdateDirectionalLight(gameTime);
-		UpdateSpecularLight(gameTime);
+		//UpdateDirectionalLight(gameTime);
+		//UpdateSpecularLight(gameTime);
 		UpdateControlledObjects(gameTime);
-		UpdateShadowProperties(gameTime);
+		//UpdateShadowProperties(gameTime);
 
 		mDog->ApplyRotation(glm::rotate(glm::quarter_pi<float>() * gameTime.ElapsedGameTimeSeconds().count() / 2.f, Vector3Helper::Up));
 
@@ -141,10 +255,16 @@ namespace Rendering
 		}
 
 		mProxyModel->Update(gameTime);
+		mSkybox->Update(gameTime);
 	}
 
 	void GraphicsProgram::Draw(const GameTime& gameTime)
 	{
+		static const GLfloat one = 1.0f;
+
+		//glClearBufferfv(GL_COLOR, 0, &ColorHelper::CornflowerBlue[0]);
+		//glClearBufferfv(GL_DEPTH, 0, &one);
+
 		mSpotLight->ClearBuffer();
 		mGBuffer->ClearBuffer();
 
@@ -167,25 +287,51 @@ namespace Rendering
 			mesh->DrawToGBuffer(gameTime);
 		}
 
-		if (!mShowShadowMapping)
+		/*if (!mDeferredEnabled)
 		{
-			for (auto& mesh : mMeshes)
+			if (!mShowShadowMapping)
 			{
-				mesh->Draw(gameTime);
+				for (auto& mesh : mMeshes)
+				{
+					mesh->Draw(gameTime);
+				}
 			}
-		}
-		else
-		{
-			for (auto& mesh : mMeshes)
+			else
 			{
-				mesh->DrawShadowed(gameTime);
+				for (auto& mesh : mMeshes)
+				{
+					mesh->DrawShadowed(gameTime);
+				}
 			}
-		}
+		}*/
 
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, mGBuffer->BufferID());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+		glBlitFramebuffer(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), 0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE);
+		glDisable(GL_DEPTH_TEST);
+
+		mDeferredDisplay->Draw(gameTime);
+		mDeferredAmbientLight->Draw(gameTime);
+
+		for (int i = 0; i < currentPointLightCount; ++i)
+		{
+			mPointLights[i]->Draw(gameTime);
+		}
+		glCullFace(GL_BACK);
+
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
+
+		//mSkybox->Draw(gameTime);
 		mFlashlight->Draw(gameTime);
-		if (mDeferredEnabled) mDeferredDisplay->Draw(gameTime);
 		mDebugRect->Draw(gameTime);
 		mDeferredDebugRect->Draw(gameTime);
+		mDebugTextWindow->Draw(gameTime);
+		mPresentation->Draw(gameTime);
 	}
 
 	float GraphicsProgram::AmbientLightIntensity() const
@@ -210,7 +356,7 @@ namespace Rendering
 
 	std::string GraphicsProgram::DeferredRenderingStatus() const
 	{
-		return mDeferredEnabled ? "Enabled" : "Disabled";
+		return "Enabled";
 	}
 
 	std::string GraphicsProgram::DeferredDebugDisplayed() const
@@ -228,6 +374,8 @@ namespace Rendering
 			ambientIntensity = std::min(ambientIntensity, 1.0f);
 
 			mAmbientLight->SetColor(vec4((vec3)ambientIntensity, 1.0f));
+
+			mDeferredAmbientLight->SetIntensity(mDeferredAmbientLight->Intensity() + gameTime.ElapsedGameTimeSeconds().count());
 		}
 
 		if (glfwGetKey(mGame->Window(), GLFW_KEY_MINUS) && ambientIntensity > 0.0f)
@@ -236,6 +384,8 @@ namespace Rendering
 			ambientIntensity = std::max(ambientIntensity, 0.0f);
 
 			mAmbientLight->SetColor(vec4((vec3)ambientIntensity, 1.0f));
+
+			mDeferredAmbientLight->SetIntensity(mDeferredAmbientLight->Intensity() - gameTime.ElapsedGameTimeSeconds().count());
 		}
 	}
 
@@ -299,6 +449,12 @@ namespace Rendering
 				mesh->mSpecularPower = specularIntensity;
 			}
 		}
+
+
+		for (auto& light : mPointLights)
+		{
+			light->radiusMult = mRadiusMultiplier;
+		}
 	}
 
 	void GraphicsProgram::UpdateControlledObjects(const Library::GameTime& gameTime)
@@ -306,7 +462,7 @@ namespace Rendering
 
 		float elapsedTime = gameTime.ElapsedGameTimeSeconds().count();
 
-		// Rotate directional light
+		// Rotate/move
 		vec3 changeAmount = Vector3Helper::Zero;
 		if (glfwGetKey(mGame->Window(), GLFW_KEY_LEFT))
 		{
@@ -324,6 +480,8 @@ namespace Rendering
 		{
 			changeAmount.z -= elapsedTime;
 		}
+
+		//ascend/descend
 		if (glfwGetKey(mGame->Window(), GLFW_KEY_PAGE_UP))
 		{
 			changeAmount.y += elapsedTime;
@@ -333,6 +491,31 @@ namespace Rendering
 			changeAmount.y -= elapsedTime;
 		}
 
+		//movement rates
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_U))
+		{
+			float& moveRate = mCamera->As<FirstPersonCamera>()->MovementRate();
+			moveRate -= elapsedTime * 10.f;
+			if (moveRate < 5.f) moveRate = 5.f;
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_I))
+		{
+			float& moveRate = mCamera->As<FirstPersonCamera>()->MovementRate();
+			moveRate += elapsedTime * 10.f;
+			if (moveRate > 100.f) moveRate = 100.f;
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_O))
+		{
+			ItemMovementRate -= elapsedTime * 10.f;
+			if (ItemMovementRate < 5.f) ItemMovementRate = 5.f;
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_P))
+		{
+			ItemMovementRate += elapsedTime * 10.f;
+			if (ItemMovementRate > 100.f) ItemMovementRate = 100.f;
+		}
+
+		//apply movement/rotations
 		if (!glfwGetKey(mGame->Window(), GLFW_KEY_LEFT_SHIFT))
 		{
 			changeAmount *= vec3(ItemRotationRate, 0, ItemRotationRate);
@@ -398,12 +581,16 @@ namespace Rendering
 	{
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 		{
-			mShowShadowMapping = !mShowShadowMapping;
+			FirstPersonCamera* cam = mCamera->As<FirstPersonCamera>();
+			cam->SetCameraLocked(!cam->CameraLocked());
+
+			cam->CameraLocked() ? glfwSetInputMode(mGame->Window(), GLFW_CURSOR, GLFW_CURSOR_NORMAL) : glfwSetInputMode(mGame->Window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			glfwSetCursorPos(mGame->Window(), mGame->ScreenWidth() / 2, mGame->ScreenHeight() / 2);
 		}
 
 		if (key == GLFW_KEY_RIGHT_CONTROL && action == GLFW_PRESS)
 		{
-			mDeferredEnabled = !mDeferredEnabled;
+			
 		}
 
 		if (key == GLFW_KEY_RIGHT_ALT && action == GLFW_PRESS)
@@ -417,6 +604,38 @@ namespace Rendering
 		{
 			++mControlledObject;
 			if (mControlledObject >= mControlledObjects.size()) mControlledObject = 0;
+		}
+
+		if (key == GLFW_KEY_COMMA && action == GLFW_PRESS)
+		{
+			mPresentation->Previous();
+		}
+
+		if (key == GLFW_KEY_PERIOD && action == GLFW_PRESS)
+		{
+			mPresentation->Next();
+		}
+
+		if (key == GLFW_KEY_J && action == GLFW_PRESS)
+		{
+			if (tenPower > 0) --tenPower;
+			currentPointLightCount = (size_t)pow(10, tenPower);
+		}
+
+		if (key == GLFW_KEY_K && action == GLFW_PRESS)
+		{
+			if (tenPower < 3) ++tenPower;
+			currentPointLightCount = (size_t)pow(10, tenPower);
+		}
+
+		if (key == GLFW_KEY_T && action == GLFW_PRESS)
+		{
+			mRadiusMultiplier -= 0.1f;
+		}
+
+		if (key == GLFW_KEY_Y && action == GLFW_PRESS)
+		{
+			mRadiusMultiplier += 0.1f;
 		}
 
 	}
